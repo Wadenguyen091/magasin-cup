@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bộ component Magasin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* Chỉ dùng cho khung trang tài liệu. Mọi component lấy từ styles.css */
+.ds-layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:var(--s12);padding-block:calc(var(--hdr) + var(--s10)) var(--s24)}
+.ds-nav{position:sticky;top:calc(var(--hdr) + var(--s10));align-self:start;display:flex;flex-direction:column;gap:var(--s1)}
+.ds-nav a{display:block;padding:var(--s2) var(--s3);border-radius:var(--r2);text-decoration:none;color:var(--ink-2);font-weight:500;font-size:14px;line-height:20px}
+.ds-nav a:hover{background:var(--card);color:var(--ink)}
+.ds-intro{margin-bottom:var(--s12)}
+.ds-intro p{color:var(--ink-2);margin-top:var(--s3);max-width:720px}
+.ds-block{padding-block:var(--s12);border-top:1px solid var(--line);scroll-margin-top:calc(var(--hdr) + var(--s4))}
+.ds-block>h2{font-size:24px;line-height:32px}
+.ds-block>p{color:var(--ink-2);margin:var(--s2) 0 var(--s6);max-width:720px}
+.ds-demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r4);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6)}
+.ds-demo.sand{background:var(--bg)} .ds-demo.dark{background:var(--dark);border-color:var(--dark)} .ds-demo.flush{padding:0;overflow:hidden}
+.ds-row{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
+.ds-cap{display:flex;flex-wrap:wrap;gap:var(--s2);align-items:center;font-size:14px;line-height:20px;color:var(--ink-2)}
+.ds-cap code,.ds-ty code,.ds-sp code,.ds-rules code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:16px;background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:2px 6px;color:var(--ink)}
+.ds-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:var(--s4)}
+.ds-sw{border:1px solid var(--line);border-radius:var(--r3);overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.ds-sw i{display:block;height:64px;border-bottom:1px solid var(--line)}
+.ds-sw b{padding:var(--s3) var(--s3) 0;font-weight:600}
+.ds-sw span{padding:0 var(--s3);font-size:12px;line-height:16px;color:var(--ink-2)} .ds-sw span:last-child{padding-bottom:var(--s3);color:var(--ink-3)}
+.ds-ty{display:grid;grid-template-columns:220px minmax(0,1fr);gap:var(--s6);align-items:baseline;padding-block:var(--s4);border-bottom:1px solid var(--line)}
+.ds-ty:last-child{border-bottom:0}
+.ds-ty>div:first-child{display:flex;flex-direction:column;gap:var(--s1);font-size:12px;line-height:16px;color:var(--ink-3)}
+.ds-ty>div:first-child code{align-self:flex-start}
+.ds-sp{display:grid;grid-template-columns:64px 48px 1fr;gap:var(--s3);align-items:center;padding-block:2px;font-size:12px;color:var(--ink-2)}
+.ds-sp i{height:12px;background:var(--brand);border-radius:2px}
+.ds-rad{display:flex;flex-wrap:wrap;gap:var(--s4)}
+.ds-rad div{width:96px;height:96px;background:var(--slot);border:1px solid var(--line-2);display:grid;place-items:end center;padding-bottom:var(--s2);font-size:12px;color:var(--ink-2)}
+.ds-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gut)}
+.ds-4{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:var(--gut)}
+.ds-rules{margin:0;padding-left:var(--s5);display:flex;flex-direction:column;gap:var(--s2);color:var(--ink-2)}
+.ds-rules b{color:var(--ink)}
+.ds-mini-sec{border:1px dashed var(--line-2);border-radius:var(--r3);padding:var(--s6)}
+.ds-mini-sec .sec-head{margin-bottom:0}
+.ds-fab{display:flex;gap:var(--s3)}
+.ds-top{position:relative;inset:auto;z-index:auto;border-radius:var(--r3);overflow:hidden}
+@media (max-width:1023px){.ds-layout{grid-template-columns:1fr}.ds-nav{position:static;flex-direction:row;flex-wrap:wrap}.ds-3{grid-template-columns:1fr}}
+@media (max-width:599px){.ds-demo{padding:var(--s5)}.ds-ty{grid-template-columns:1fr;gap:var(--s2)}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-magasin" viewBox="112 178 618 86"><path d="M586.3,207.6h41.1c1.2,0,2.1,1,2,2.2-1.2,13.2-2.4,26.3-3.7,39.5l-0.5,5.4c0,.2-0.1,1.2-1.1,2-0.4.4-0.9.6-1.3.7-0.5.1-0.9.2-1,.2h-29.8c-0.2,0-1.3,0-2.3-0.8-1-0.8-1.1-1.8-1.2-2l-4.2-44.9c-0.1-1.2.8-2.2,2-2.2Z"/><path d="M515.2,184.6h52c.5,0,3.1,0,5.2,2.2,2.1,2.1,2.2,4.7,2.1,5.2v30.4c0,.2,0,1.6-1,2.6-1.1,1.1-2.4,1.1-2.6,1.1h-58.2c-1.9.3-3.4,1.8-3.6,3.6-0.2,2.1,1.3,4.1,3.6,4.4h58.2c.2,0,1.6,0,2.6,1.1,1.1,1.1,1.1,2.4,1,2.7v16.5c0,.3,0,1.4-0.9,2.4-1.1,1.2-2.5,1.3-2.8,1.3h-74.2c-2.1-0.2-3.7-2.1-3.6-4.1,0-1.9,1.6-3.6,3.6-3.8h58.2c2-0.2,3.6-1.9,3.6-3.9,0-2.1-1.5-3.9-3.6-4.1h-54.5c-0.5,0-3.1,0-5.2-2.2-2.1-2.1-2.2-4.7-2.2-5.2v-27.9c0-1.5.1-9.4,6.5-15.7,6.4-6.4,14.3-6.5,15.7-6.5Z"/><path d="M715.2,192.2c-6.4-7.3-15.1-7.6-16.6-7.6h-51.9c-0.5,0-3.1,0-5.2,2.2-2.1,2.1-2.2,4.7-2.2,5.2v62.3s0,.1,0,.2c.1,1.4,1,2.3,1.1,2.3,1,1,2.3,1.1,2.6,1.1h8.6c.3,0,1.5,0,2.6-1.1,1-1,1.1-2.3,1.1-2.6v-20.3c0-0.5,0-3.4,2.3-5.6,2.3-2.3,5.1-2.3,5.6-2.3h33.8c4.4,0,8,3.6,8,8v20.3c0,.2,0,1.5,1,2.6,1.1,1.1,2.4,1.1,2.6,1.1h8.5c.2,0,1.6,0,2.6-1.1,1-1,1-2.3,1-2.6v-47.5c0-1.9-0.3-8.7-5.5-14.6Z"/><path d="M216.7,186.8c-2.1-2.3-4.9-2.3-5.4-2.2h-67.9c-1.3,0-9.5-0.2-15.9,6.2-6.5,6.5-6.3,14.7-6.3,16v47.5c0,.3,0,1.5,1.1,2.6,1,1,2.3,1.1,2.6,1.1h8.6c.3,0,1.5,0,2.6-1.1,1-1,1.1-2.3,1.1-2.6v-20.3c0-0.5,0-3.4,2.4-5.6,2.3-2.3,5.1-2.3,5.6-2.3h8.9c4.4,0,8,3.6,8,8v20.3c0,.3,0,1.5,1.1,2.6,1,1.1,2.4,1.1,2.6,1.1h8.5c.2,0,1.6,0,2.6-1.1,1-1,1-2.3,1-2.6v-20.3c0-4.4,3.6-8,8-8h8.9c.5,0,3.4,0,5.6,2.3,2.3,2.3,2.3,5.1,2.4,5.6v20.3c0,.3,0,1.5,1.1,2.6,1.1,1.1,2.4,1.1,2.7,1.1h8.5c.3,0,1.5,0,2.6-1.1,1-1,1.1-2.3,1.1-2.6v-62.3c0-0.5,0-3.1-2-5.2Z"/><path d="M393.4,235.2c-1-1.1-2.4-1.1-2.6-1.1h-50.3c-0.1,0-2.4.3-3.4,2.3-0.1.2-0.7,1.6-0.1,3.1.6,1.4,1.9,2.4,3.5,2.6h34.3c2.4.1,4.2,2.2,4,4.4-0.2,1.9-1.9,3.5-4,3.6h-38.1c-4.3,0-7.8-3.5-7.8-7.8v-8.2c0-4.3,3.5-7.8,7.8-7.8h0s54.1,0,54.1,0c.2,0,1.6,0,2.6-1,1.1-1.1,1.1-2.4,1-2.6v-30.4c0-0.5,0-3.1-2.1-5.2-2.1-2.1-4.7-2.2-5.2-2.2h-51.9s-9.1,0-15.7,6.5c-6.5,6.4-6.5,15.7-6.5,15.7v47.5c0,.3,0,1.5,1.1,2.6,1,1,2.3,1.1,2.6,1.1h74.2c.2,0,1.6,0,2.6-1.1,1-1,1-2.3,1-2.6v-16.5c0-0.2,0-1.6-1-2.7Z"/><path d="M482.3,186.8c-1.4-1.5-3.2-2.2-5.2-2.2h-52c-3.1,0-6,.6-8.7,1.7-2.7,1.2-5,2.8-7.1,4.8-2,2-3.6,4.4-4.8,7.1-1.2,2.7-1.7,5.6-1.7,8.7v47.5c0,1,.4,1.8,1.1,2.6.7.7,1.6,1.1,2.6,1.1h8.6c1,0,1.8-0.4,2.6-1.1.7-0.7,1.1-1.6,1.1-2.6v-8.6c0-1,.4-1.8,1.1-2.6.7-0.8,1.6-1.1,2.6-1.1h42.3c1,0,1.9.4,2.7,1.1.7.7,1.1,1.6,1.1,2.6v8.6c0,1,.3,1.8,1,2.6s1.6,1.1,2.6,1.1h8.5c1,0,1.9-0.4,2.6-1.1.7-0.7,1-1.6,1-2.6v-62.3c0-2-0.7-3.8-2.1-5.2ZM421.3,234.1c-1.2,0-2.2-1.1-2-2.4.6-3.4,1.2-6.8,1.9-10.2,0,0,0,0,0,0,.3-1.3,1.5-2.4,2.8-2.4h39.4c1.3,0,2.6,1.1,2.8,2.4l1.9,10.2c.2,1.2-0.7,2.4-2,2.4h-44.9Z"/><path d="M304.4,186.8c-1.4-1.5-3.2-2.2-5.2-2.2h-52c-3.1,0-6,.6-8.7,1.7-2.7,1.2-5,2.8-7.1,4.8-2,2-3.6,4.4-4.8,7.1-1.2,2.7-1.7,5.6-1.7,8.7v47.5c0,1,.4,1.8,1.1,2.6.7.7,1.6,1.1,2.6,1.1h8.6c1,0,1.8-0.4,2.6-1.1.7-0.7,1.1-1.6,1.1-2.6v-8.6c0-1,.4-1.8,1.1-2.6.7-0.8,1.6-1.1,2.6-1.1h42.3c1,0,1.9.4,2.7,1.1.7.7,1.1,1.6,1.1,2.6v8.6c0,1,.3,1.8,1,2.6s1.6,1.1,2.6,1.1h8.5c1,0,1.9-0.4,2.6-1.1.7-0.7,1-1.6,1-2.6v-62.3c0-2-0.7-3.8-2.1-5.2ZM243.4,234.1c-1.2,0-2.2-1.1-2-2.4.6-3.4,1.2-6.8,1.9-10.2,0,0,0,0,0,0,.3-1.3,1.5-2.4,2.8-2.4h39.4c1.3,0,2.6,1.1,2.8,2.4l1.9,10.2c.2,1.2-0.7,2.4-2,2.4h-44.9Z"/><path d="M419,233.7c0,0,0,.1,0,.2h0c0-0.1,0-0.2,0-0.2Z"/><path d="M587.1,184.3h39.4c1.3,0,2.6,1.1,2.8,2.5l1.9,10.2c.2,1.2-0.7,2.4-2,2.4h-44.9c-1.2,0-2.2-1.1-2-2.4l1.9-10.2c.2-1.4,1.5-2.5,2.8-2.5Z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 9l5-5 5 5M12 4v12"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M5 6h.01M5 12h.01M5 18h.01"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+  <symbol id="i-sheet" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v18"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M4 13l2.5-7h11L20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5z"/><path d="M4 13h4l1 2h6l1-2h4"/></symbol>
+  <symbol id="i-printer" viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="7" rx="1"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4 18-7z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M5 4h14l-2 17H7L5 4zM5.5 8h13"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Về website Magasin Cup"><svg class="wm" aria-hidden="true"><use href="#i-magasin"/></svg></a>
+    <div class="top-r"><a class="btn btn-light" href="./">Xem website</a></div>
+  </div>
+</header>
+
+<div class="wrap ds-layout">
+  <nav class="ds-nav" aria-label="Mục lục">
+    <a href="#quy-tac">Quy tắc</a><a href="#mau">Màu</a><a href="#chu">Chữ</a><a href="#khoang-cach">Khoảng cách</a><a href="#bo-goc">Bo góc</a>
+    <a href="#nut">Nút</a><a href="#the">Thẻ</a><a href="#review">Nhận xét khách</a><a href="#khoi-tinh-nang">Khối tính năng</a><a href="#anh">Ảnh và khung trống</a><a href="#dau-section">Đầu section</a><a href="#nho">Nhãn, số, danh sách</a>
+    <a href="#hoi-dap">Hỏi đáp</a><a href="#nhap">Ô nhập và chọn</a><a href="#thong-bao">Thông báo</a><a href="#header">Header</a><a href="#noi">Nút nổi</a><a href="#footer">Footer</a>
+  </nav>
+  <main>
+    <div class="ds-intro">
+      <h1 class="t-h1">Bộ component Magasin Cup</h1>
+      <p class="t-lead">Mọi thành phần trên website in ly lấy từ một file <code>styles.css</code>. Trang này dùng đúng file đó, nên thấy gì ở đây là đúng như trên web.</p>
+    </div>
+
+    <section class="ds-block" id="quy-tac"><h2>Quy tắc</h2><p>Giữ những điều này thì trang nào làm thêm cũng nhất quán.</p>
+      <div class="ds-demo"><ol class="ds-rules">
+        <li><b>Lưới 4px.</b> Khoảng cách, cỡ chữ, chiều cao dòng đều chia hết cho 4.</li>
+        <li><b>Một nút xanh mỗi khu vực.</b> Hành động phụ dùng nút trắng viền.</li>
+        <li><b>Không bóng đổ.</b> Chỉ nút xanh có bóng nhẹ. Thẻ phân tách bằng viền 1px.</li>
+        <li><b>Một màu nhấn duy nhất: xanh.</b> Chữ chỉ có 2 màu: <code>--ink</code> (chính) và <code>--ink-2</code> (phụ). Độ dày chỉ 2 mức: 400 cho chữ thường, 600 cho tiêu đề, nhãn, nút. Nhấn bằng <code>.hl</code> (xanh, cùng độ dày). Đỏ chỉ dùng báo lỗi.</li>
+        <li><b>Không badge trên đầu section.</b> Nhãn nhỏ <code>.tag</code> chỉ dùng bên trong thẻ.</li>
+        <li><b>Nhịp section cố định.</b> Trên = dưới = <code>--sec-y</code> (96 / 80 / 64). Tiêu đề cách nội dung <code>--head-gap</code> (48 / 32).</li>
+        <li><b>Thẻ có ảnh:</b> bo 24, đệm 12, ảnh bo 12, chữ cách mép 24, các khối cách nhau 16. <b>Thẻ chữ:</b> đệm 24 (điện thoại 20).</li>
+        <li><b>Chữ dễ đọc cho tiểu thương.</b> Câu ngắn, không thuật ngữ. Cụm như "30 phút", "in ly", "Cần Thơ" không bị cắt dòng.</li>
+      </ol></div>
+    </section>
+
+    <section class="ds-block" id="mau"><h2>Màu</h2><p>Xanh là màu nhấn duy nhất: nút chính, chữ nhấn, nhãn. Nâu tối cho hero và footer. Đỏ chỉ để báo lỗi.</p>
+      <div class="ds-grid"><div class="ds-sw"><i style="background:#F7F4EF"></i><b>Nền</b><span>--bg · #F7F4EF</span><span>Nền trang</span></div><div class="ds-sw"><i style="background:#FFFFFF"></i><b>Thẻ</b><span>--card · #FFFFFF</span><span>Nền thẻ, section trắng</span></div><div class="ds-sw"><i style="background:#FBF8F3"></i><b>Chìm</b><span>--sunk · #FBF8F3</span><span>Ô nhập phụ, chân thẻ</span></div><div class="ds-sw"><i style="background:#F1ECE5"></i><b>Khung ảnh</b><span>--slot · #F1ECE5</span><span>Khung chờ ảnh</span></div><div class="ds-sw"><i style="background:#2A1B10"></i><b>Chữ chính</b><span>--ink · #2A1B10</span><span>Tiêu đề, chữ thường</span></div><div class="ds-sw"><i style="background:#6B5A4E"></i><b>Chữ phụ</b><span>--ink-2 · #6B5A4E</span><span>Mô tả, chú thích</span></div><div class="ds-sw"><i style="background:#A39385"></i><b>Chữ mờ</b><span>--ink-3 · #A39385</span><span>Gợi ý, nhãn tắt</span></div><div class="ds-sw"><i style="background:#ECE5DB"></i><b>Viền</b><span>--line · #ECE5DB</span><span>Viền thẻ</span></div><div class="ds-sw"><i style="background:#DCD2C5"></i><b>Viền đậm</b><span>--line-2 · #DCD2C5</span><span>Viền nút phụ, ô nhập</span></div><div class="ds-sw"><i style="background:#0075D6"></i><b>Xanh chính</b><span>--brand · #0075D6</span><span>Nút chính, chữ nhấn</span></div><div class="ds-sw"><i style="background:#005FB0"></i><b>Xanh đậm</b><span>--brand-2 · #005FB0</span><span>Hover nút chính</span></div><div class="ds-sw"><i style="background:#E7F1FB"></i><b>Xanh nhạt</b><span>--brand-soft · #E7F1FB</span><span>Nền đang chọn</span></div><div class="ds-sw"><i style="background:#C2272D"></i><b>Đỏ thương hiệu</b><span>--red · #C2272D</span><span>Chữ nhấn MAGASIN, nhãn thẻ</span></div><div class="ds-sw"><i style="background:#FBEACE"></i><b>Kem</b><span>--kem · #FBEACE</span><span>Chữ trên nền tối</span></div><div class="ds-sw"><i style="background:#EBDDC9"></i><b>Be header</b><span>--be · #EBDDC9</span><span>Header</span></div><div class="ds-sw"><i style="background:#2A1B10"></i><b>Nâu tối</b><span>--dark · #2A1B10</span><span>Footer, hero</span></div></div>
+    </section>
+
+    <section class="ds-block" id="chu"><h2>Chữ</h2><p>Be Vietnam Pro. Cỡ ghi theo máy tính · máy tính bảng · điện thoại.</p>
+      <div class="ds-demo"><div class="ds-ty"><div><code>.t-display</code><span>80/88 · 56/64 · 40/48</span><span>Tiêu đề hero</span></div><div class="t-display">In ấn kinh doanh dễ dàng</div></div><div class="ds-ty"><div><code>.t-h1</code><span>48/56 · 40/48 · 28/36</span><span>Tiêu đề section</span></div><div class="t-h1">Khách hàng đã in tại <span class="hl">MAGASIN</span></div></div><div class="ds-ty"><div><code>.t-h2</code><span>40/48 · 32/44 · 24/34</span><span>Tiêu đề kể chuyện</span></div><div class="t-h2">mình đoán là bạn muốn <span class="hl">in cho thương hiệu</span></div></div><div class="ds-ty"><div><code>.t-h3</code><span>24/32 · 20/28</span><span>Tiêu đề khối</span></div><div class="t-h3">In tên quán tại MAGASIN</div></div><div class="ds-ty"><div><code>.t-h4 / card-title</code><span>20/28 · 18/26</span><span>Tiêu đề thẻ</span></div><div class="t-h4">Chuyên viên vẽ giúp</div></div><div class="ds-ty"><div><code>.t-lead</code><span>18/28 · 16/24</span><span>Đoạn mở đầu</span></div><div class="t-lead">Gửi logo hôm nay. Xưởng nhắn Zalo báo giá.</div></div><div class="ds-ty"><div><code>.t-body</code><span>16/24</span><span>Chữ thường</span></div><div class="t-body">Chọn ly, gửi logo, xưởng nhắn Zalo báo giá.</div></div><div class="ds-ty"><div><code>.t-sm / hint</code><span>14/20</span><span>Gợi ý, chú thích</span></div><div class="t-sm">Ø là cỡ miệng ly.</div></div><div class="ds-ty"><div><code>.t-label</code><span>12/16 · in hoa</span><span>Nhãn cột, nhãn nhỏ</span></div><div class="t-label">Liên hệ</div></div>
+        <div class="ds-ty"><div><code>.hl</code><span>Chữ nhấn trong tiêu đề</span></div><div class="t-h3">Ly trơn vs <span class="hl">Ly in logo MAGASIN</span></div></div>
+      </div>
+    </section>
+
+    <section class="ds-block" id="khoang-cach"><h2>Khoảng cách</h2><p>Biến <code>--s1</code> tới <code>--s24</code>. Nhịp trang: <code>--sec-y</code> 96/80/64, <code>--head-gap</code> 48/32, rãnh lưới <code>--gut</code> 24/16.</p>
+      <div class="ds-demo"><div class="ds-sp"><code>--s1</code><span class="num">4px</span><i style="width:8px"></i></div><div class="ds-sp"><code>--s2</code><span class="num">8px</span><i style="width:16px"></i></div><div class="ds-sp"><code>--s3</code><span class="num">12px</span><i style="width:24px"></i></div><div class="ds-sp"><code>--s4</code><span class="num">16px</span><i style="width:32px"></i></div><div class="ds-sp"><code>--s5</code><span class="num">20px</span><i style="width:40px"></i></div><div class="ds-sp"><code>--s6</code><span class="num">24px</span><i style="width:48px"></i></div><div class="ds-sp"><code>--s8</code><span class="num">32px</span><i style="width:64px"></i></div><div class="ds-sp"><code>--s10</code><span class="num">40px</span><i style="width:80px"></i></div><div class="ds-sp"><code>--s12</code><span class="num">48px</span><i style="width:96px"></i></div><div class="ds-sp"><code>--s16</code><span class="num">64px</span><i style="width:128px"></i></div><div class="ds-sp"><code>--s20</code><span class="num">80px</span><i style="width:160px"></i></div><div class="ds-sp"><code>--s24</code><span class="num">96px</span><i style="width:192px"></i></div></div>
+    </section>
+
+    <section class="ds-block" id="bo-goc"><h2>Bo góc</h2><p>8 cho ô nhỏ, 12 cho ô nhập, 16 cho ảnh và ô chọn, 24 cho thẻ, 32 cho khung so sánh, tròn cho nút và chip.</p>
+      <div class="ds-demo"><div class="ds-rad"><div style="border-radius:8px">--r1 8</div><div style="border-radius:12px">--r2 12</div><div style="border-radius:16px">--r3 16</div><div style="border-radius:24px">--r4 24</div><div style="border-radius:32px">--r5 32</div><div style="border-radius:999px">--pill</div></div></div>
+    </section>
+
+    <section class="ds-block" id="nut"><h2>Nút</h2><p>Cao 40 · 48 · 56. Bo tròn. Có mũi tên khi dẫn tới bước tiếp theo.</p>
+      <div class="ds-demo">
+        <div class="ds-row"><button class="btn btn-pri btn-lg">Đặt in ly</button><button class="btn btn-pri">Đặt in như vậy</button><button class="btn btn-pri btn-sm">Đặt in ly</button></div>
+        <div class="ds-cap"><code>.btn.btn-pri</code> + <code>.btn-lg</code> / mặc định / <code>.btn-sm</code> · Hành động chính</div>
+        <div class="ds-row"><button class="btn btn-sec">Hỏi qua Zalo</button><button class="btn btn-text"><svg class="ico"><use href="#i-back"/></svg>Quay lại</button></div>
+        <div class="ds-cap"><code>.btn-sec</code> hành động phụ · <code>.btn-text</code> quay lại, hủy</div>
+      </div>
+      <div class="ds-demo dark" style="margin-top:var(--s4)">
+        <div class="ds-row"><button class="btn btn-pri btn-lg">Đặt in ly</button><button class="btn btn-light btn-lg">Nhắn Zalo</button><button class="btn btn-light btn-sm">Chỉ đường</button></div>
+        <div class="ds-cap" style="color:var(--on-dark-2)"><code>.btn-light</code> nút phụ trên ảnh hoặc nền tối · thêm <code>.btn-icon</code> cho nút chỉ có biểu tượng (mạng xã hội)</div>
+      </div>
+    </section>
+
+    <section class="ds-block" id="the"><h2>Thẻ</h2><p><code>.card</code> nền trắng, viền 1px, bo 24. Thêm <code>.card--media</code> (đệm 12, khối cách 16) cho thẻ có ảnh hoặc <code>.card--pad</code> cho thẻ chữ.</p>
+      <div class="ds-demo sand">
+        <div class="ds-4">
+          <div class="card card--media ket-card"><div class="card-tx"><span class="card-eyebrow">Chưa có logo</span><b class="card-title">Chuyên viên vẽ giúp,<br>chuyên nghiệp giá tốt</b></div><div class="media"><img src="assets/ve-logo.jpg" alt="Nhân viên xưởng vẽ logo"></div><button class="btn btn-pri btn-block">Nhờ xưởng vẽ</button></div>
+          <div class="card card--media ket-card"><div class="card-tx"><span class="card-eyebrow">Đã có logo</span><b class="card-title">In nhanh,<br>tiết kiệm chi phí</b></div><div class="media slot"><div class="slot-in"><svg class="ico"><use href="#i-image"/></svg><span>Ảnh: Đã có logo</span></div></div><button class="btn btn-pri btn-block">Tải logo lên</button></div>
+                    <div class="card card--pad step-card"><span class="num-badge">01</span><b class="card-title">Gõ tên quán</b><p class="card-desc">Câu lệnh tự điền tên quán của bạn</p></div>
+        </div>
+        <div class="ds-cap"><code>.card.card--media.ket-card</code> thẻ chọn hướng đi · <code>.card.card--pad.step-card</code> thẻ bước · bên trong: <code>.card-tx</code> <code>.card-eyebrow</code> <code>.card-title</code> <code>.card-desc</code> <code>.card-meta</code> <code>.btn-block</code></div>
+      </div>
+    </section>
+
+    <section class="ds-block" id="review"><h2>Thẻ nhận xét khách, chạy vòng</h2><p>Ảnh 16:9, câu nhận xét thật, tên quán. Đặt trong <code>.loop</code> &gt; <code>.loop-track</code> để chạy ngang liên tục, rê chuột vào thì dừng. Chưa có nhận xét thật thì để chữ chờ, không viết giả.</p>
+      <div class="ds-demo sand flush" style="padding-block:var(--s8)"><div class="loop"><div class="loop-track" style="--n:3"><figure class="card card--media hof-card"><div class="media slot"><div class="slot-in"><svg class="ico"><use href="#i-image"/></svg><span>Ảnh ly khách · 16:9</span></div></div><blockquote class="hof-quote muted">Chờ câu nhận xét thật của khách</blockquote><figcaption class="hof-who"><span class="hof-av">T</span><span><b class="muted">Tên quán khách</b><span>Cần Thơ</span></span></figcaption></figure><figure class="card card--media hof-card"><div class="media slot"><div class="slot-in"><svg class="ico"><use href="#i-image"/></svg><span>Ảnh ly khách · 16:9</span></div></div><blockquote class="hof-quote muted">Chờ câu nhận xét thật của khách</blockquote><figcaption class="hof-who"><span class="hof-av">T</span><span><b class="muted">Tên quán khách</b><span>Cần Thơ</span></span></figcaption></figure><figure class="card card--media hof-card"><div class="media slot"><div class="slot-in"><svg class="ico"><use href="#i-image"/></svg><span>Ảnh ly khách · 16:9</span></div></div><blockquote class="hof-quote muted">Chờ câu nhận xét thật của khách</blockquote><figcaption class="hof-who"><span class="hof-av">T</span><span><b class="muted">Tên quán khách</b><span>Cần Thơ</span></span></figcaption></figure><figure aria-hidden="true" class="card card--media hof-card"><div class="media slot"><div class="slot-in"><svg class="ico"><use href="#i-image"/></svg><span>Ảnh ly khách · 16:9</span></div></div><blockquote class="hof-quote muted">Chờ câu nhận xét thật của khách</blockquote><figcaption class="hof-who"><span class="hof-av">T</span><span><b class="muted">Tên quán khách</b><span>Cần Thơ</span></span></figcaption></figure><figure aria-hidden="true" class="card card--media hof-card"><div class="media slot"><div class="slot-in"><svg class="ico"><use href="#i-image"/></svg><span>Ảnh ly khách · 16:9</span></div></div><blockquote class="hof-quote muted">Chờ câu nhận xét thật của khách</blockquote><figcaption class="hof-who"><span class="hof-av">T</span><span><b class="muted">Tên quán khách</b><span>Cần Thơ</span></span></figcaption></figure><figure aria-hidden="true" class="card card--media hof-card"><div class="media slot"><div class="slot-in"><svg class="ico"><use href="#i-image"/></svg><span>Ảnh ly khách · 16:9</span></div></div><blockquote class="hof-quote muted">Chờ câu nhận xét thật của khách</blockquote><figcaption class="hof-who"><span class="hof-av">T</span><span><b class="muted">Tên quán khách</b><span>Cần Thơ</span></span></figcaption></figure></div></div></div>
+      <div class="ds-cap" style="margin-top:var(--s3)"><code>.loop</code> <code>.loop-track</code> <code>figure.card.card--media.hof-card</code> <code>.hof-quote</code> <code>.hof-who</code> <code>.hof-av</code></div>
+    </section>
+
+    <section class="ds-block" id="khoi-tinh-nang"><h2>Khối tính năng 2 ô</h2><p>Ảnh bên trái, nội dung bên phải trong một khung bo 32. Dùng cho section giới thiệu tính năng, mỗi khối 3–4 lợi ích. Khi có nhiều bước, dùng <code>.feat-scroll</code>: các ô chữ <code>.feat-step</code> (01 02 03) cuộn bên trái, ảnh <code>.feat-visual</code> bên phải đứng yên và tự đổi theo bước đang xem; bước khác mờ đi. Máy tính bảng và điện thoại: mỗi bước có ảnh riêng ngay trên chữ.</p>
+      <div class="feat-box">
+        <div class="feat-media"><div class="media slot"><div class="slot-in"><svg class="ico"><use href="#i-image"/></svg><span>Ảnh điện thoại</span></div></div></div>
+        <div class="feat-body"><span class="feat-num">02</span><h2 class="t-h2">Tự tay làm logo với<br><span class="hl">bất kỳ AI miễn phí nào</span></h2>
+          <ul class="feat-list"><li><svg class="ico"><use href="#i-check"/></svg>In nhanh chỉ 4 bước tiện lợi</li><li><svg class="ico"><use href="#i-check"/></svg>Tự làm chủ cá tính thương hiệu cùng AI</li><li><svg class="ico"><use href="#i-check"/></svg>Chi phí tối ưu, phù hợp mọi ngân sách</li></ul>
+          <button class="btn btn-pri btn-lg">Mở thư viện câu lệnh</button></div>
+      </div>
+      <div class="ds-cap" style="margin-top:var(--s3)"><code>.feat-box</code> &gt; <code>.feat-media</code> (<code>.media.slot</code> hoặc ảnh) + <code>.feat-body</code> (<code>.feat-num</code> <code>h2.t-h2</code> <code>.feat-list</code> <code>.btn</code>)</div>
+    </section>
+
+    <section class="ds-block" id="anh"><h2>Ảnh và khung trống</h2><p><code>.media</code> giữ ảnh phủ kín, bo 16. Chưa có ảnh thì thêm <code>.slot</code> và ghi rõ cần ảnh gì.</p>
+      <div class="ds-demo"><div class="ds-3">
+        <div class="media" style="height:200px"><img src="assets/ly-tron.jpg" alt="Ly cà phê sữa đá"></div>
+        <div class="media" style="height:200px"><img src="assets/hero.jpg" alt="Ly in logo"></div>
+        <div class="media slot" style="height:200px"><div class="slot-in"><svg class="ico"><use href="#i-image"/></svg><span>Ảnh hero · 2400 × 1350</span></div></div>
+      </div><div class="ds-cap"><code>.media</code> · <code>.media.slot</code> + <code>.slot-in</code></div></div>
+    </section>
+
+    <section class="ds-block" id="dau-section"><h2>Đầu section</h2><p>Mặc định căn giữa. Section có nút bên phải dùng <code>--split</code>. Câu kể chuyện dùng <code>--story</code>. Nút cuối section dùng <code>.sec-cta</code>.</p>
+      <div class="ds-demo">
+        <div class="ds-mini-sec"><div class="sec-head"><h2 class="t-h1">Ly trơn vs <span class="hl">Ly in logo MAGASIN</span></h2><p class="sec-sub">Cùng một ly nước. Khách nhớ quán khác hẳn.</p></div></div>
+        <div class="ds-cap"><code>.sec-head</code> + <code>h2.t-h1</code> + <code>p.sec-sub</code></div>
+        <div class="ds-mini-sec"><div class="sec-head sec-head--split"><h2 class="t-h1">Khách hàng đã in<br>tại <span class="hl">MAGASIN</span></h2><button class="btn btn-pri">Đặt in như vậy</button></div></div>
+        <div class="ds-cap"><code>.sec-head.sec-head--split</code></div>
+        <div class="ds-mini-sec"><div class="sec-head sec-head--story"><h2 class="t-h2">Cũng là chủ quán như bạn,<br>mình biết bạn đang <span class="hl">"kẹt"</span> ở đâu</h2></div></div>
+        <div class="ds-cap"><code>.sec-head.sec-head--story</code> + <code>h2.t-h2</code> (câu kể chuyện, tiêu đề cỡ nhỏ hơn)</div>
+        <div class="ds-cap">Nền section: <code>.sec--white</code> <code>.sec--cream</code> <code>.sec--sand</code> <code>.sec--blue</code>. Hai section liền nhau không cùng nền.</div>
+      </div>
+    </section>
+
+    <section class="ds-block" id="nho"><h2>Nhãn, số thứ tự, danh sách tích</h2><p>Nhãn chỉ dùng trong thẻ. Danh sách tích dùng cho lợi ích, so sánh.</p>
+      <div class="ds-demo">
+        <div class="ds-row"><span class="tag">Ly trơn</span><span class="tag tag--brand">Ly in logo</span><span class="badge">Minh hoạ</span><span class="num-badge">01</span></div>
+        <div class="ds-cap"><code>.tag</code> <code>.tag--brand</code> <code>.badge</code> <code>.num-badge</code></div>
+        <div class="ds-row" style="gap:var(--s12);align-items:flex-start"><ul class="checklist checklist--mute"><li>Khách không nhớ tên quán</li><li>Ly quán nào cũng giống nhau</li></ul><ul class="checklist checklist--brand"><li>Khách nhớ tên quán</li><li>Ly đẹp, khách chụp hình đăng</li></ul></div>
+        <div class="ds-cap"><code>.checklist.checklist--mute</code> <code>.checklist.checklist--brand</code></div>
+      </div>
+    </section>
+
+    <section class="ds-block" id="hoi-dap"><h2>Hỏi đáp</h2><p>Dùng thẻ <code>details</code> có sẵn của trình duyệt. Câu đầu mở sẵn.</p>
+      <div class="ds-demo"><div class="acc">
+        <details open><summary>Ít nhất in bao nhiêu ly?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Xưởng nhận từ 500 ly. In càng nhiều, giá mỗi ly càng rẻ.</p></details>
+        <details><summary>Giá in ly bao nhiêu?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Giá tùy loại ly và số lượng. Xưởng báo giá qua Zalo trong 30 phút.</p></details>
+      </div><div class="ds-cap"><code>.acc</code> &gt; <code>details</code> &gt; <code>summary</code> + <code>svg.ico</code> + <code>p</code></div></div>
+    </section>
+
+    <section class="ds-block" id="nhap"><h2>Ô nhập và chọn</h2><p>Ô nhập cao 48, bo 12. Viền xanh khi đang nhập, đỏ khi sai.</p>
+      <div class="ds-demo">
+        <div class="grid2"><div class="field"><label class="label" for="d1">Tên quán</label><input class="inp" id="d1" placeholder="vd Cà Phê Gió"></div><div class="field"><label class="label" for="d2">Số Zalo <span class="opt">(bắt buộc)</span></label><input class="inp err" id="d2" value="090123"><span class="hint">Số Zalo chưa đủ 10 số.</span></div></div>
+        <div class="ds-cap"><code>.field</code> <code>.label</code> <code>.inp</code> <code>.inp.err</code> <code>.hint</code></div>
+        <div class="grid2"><div class="field"><label class="label" for="d4">Tìm</label><div class="search"><svg class="search-ic" aria-hidden="true"><use href="#i-search"/></svg><input class="inp" id="d4" type="search" placeholder="Gõ phong cách bạn tìm"></div></div><div class="field"><label class="label" for="d3">Quán bán gì</label><div class="select"><select class="inp" id="d3"><option>Cà phê</option><option>Trà sữa</option><option>Nước ép</option></select><svg class="select-ic" aria-hidden="true"><use href="#i-down"/></svg></div></div></div>
+        <div class="ds-cap"><code>.search</code> <code>.search-ic</code> <code>.select</code> <code>select.inp</code> <code>.select-ic</code> · Ô tìm có kính lúp; dropdown cùng kiểu ô nhập, mũi tên nâu nhạt, xanh khi đang chọn</div>
+        <div class="chips"><button class="chip" aria-pressed="true">500ml <small>Ø95</small></button><button class="chip" aria-pressed="false">700ml <small>Ø95</small></button><button class="chip" aria-pressed="false"><i class="sw" style="background:#3A1F0C"></i>Nâu cà phê</button></div>
+        <div class="ds-row"><div class="seg" role="group"><button aria-pressed="true">1 mặt</button><button aria-pressed="false">2 mặt</button></div><div class="tabs"><button aria-pressed="true">Mới<small>3</small></button><button aria-pressed="false">Đang làm<small>1</small></button></div></div>
+        <label class="check"><input type="checkbox"><span>Tôi đồng ý cho Xưởng xử lý thông tin cá nhân theo <a class="linkish" href="./#chinh-sach-bao-mat">Chính sách bảo mật</a>.</span></label>
+        <div class="ds-cap"><code>.chips</code> <code>.chip[aria-pressed]</code> <code>.seg</code> <code>.tabs</code> <code>.check</code> <code>.linkish</code></div>
+      </div>
+    </section>
+
+    <section class="ds-block" id="thong-bao"><h2>Thông báo</h2><p>Màu nền nhạt, chữ cùng tông. Không dùng đỏ cho thông báo thường.</p>
+      <div class="ds-demo">
+        <div class="note info"><svg class="ico"><use href="#i-info"/></svg><span>Xưởng nhắn Zalo báo giá trong 30 phút.</span></div>
+        <div class="note warn"><svg class="ico"><use href="#i-info"/></svg><span>Vẽ logo có tính phí, báo chung với giá in.</span></div>
+        <p class="notice">Xưởng dùng tên, số Zalo và file bạn gửi chỉ để báo giá và làm đơn này.</p>
+        <div class="ds-cap"><code>.note.info</code> <code>.note.warn</code> <code>.notice</code> · Báo nhanh dùng <code>.toast</code></div>
+      </div>
+    </section>
+
+    <section class="ds-block" id="header"><h2>Header</h2><p>Nền nâu đậm, logo trắng, cố định trên cùng. Chỉ có logo và một nút trắng Đặt in nhanh.</p>
+      <div class="ds-demo flush"><header class="top ds-top"><div class="wrap"><span class="brand"><svg class="wm" aria-hidden="true"><use href="#i-magasin"/></svg></span><div class="top-r"><button class="btn btn-pri">Đặt in ly</button></div></div></header></div>
+      <div class="ds-cap" style="margin-top:var(--s3)"><code>.top</code> <code>.brand</code> <code>.wm</code> <code>.top-r</code></div>
+    </section>
+
+    <section class="ds-block" id="noi"><h2>Nút nổi</h2><p>Góc phải dưới, luôn hiện. Rê chuột vào Zalo hiện "Trả lời trong 30 phút".</p>
+      <div class="ds-demo"><div class="ds-fab">
+        <span class="fab-b ms"><svg viewBox="0 0 24 24"><path d="M12 2.5C6.5 2.5 2.5 6.4 2.5 11.3c0 2.7 1.3 5 3.3 6.6V21l3-1.7c1 .3 2.1.4 3.2.4 5.5 0 9.5-3.9 9.5-8.8S17.5 2.5 12 2.5z" fill="currentColor"/></svg></span>
+        <span class="fab-b zl"><b>Zalo</b></span>
+      </div><div class="ds-cap"><code>.fab</code> &gt; <code>.fab-b.ms</code> <code>.fab-b.zl</code> (TikTok <code>.fab-b.tt</code> hiện khi có kênh)</div></div>
+    </section>
+
+    <section class="ds-block" id="footer"><h2>Footer</h2><p>Nền nâu tối cùng tông hero. Lời mời + 2 nút, 4 cột thông tin, chữ MAGASIN mờ. Footer thật của trang này nằm ngay bên dưới.</p>
+      <div class="ds-cap"><code>.fx</code> <code>.fx-cta</code> <code>.fx-cols</code> <code>.t-label</code> <code>.fx-list</code> <code>.btn-icon</code> <code>.fx-word</code> <code>.foot-b</code></div>
+    </section>
+  </main>
+</div>
+
+<footer class="fx" ><div class="wrap">
+  <div class="fx-cta">
+    <div><h2 class="t-h1">Sẵn sàng có ly<br>mang tên quán?</h2><p class="t-lead">Gửi logo hôm nay. Xưởng nhắn Zalo báo giá trong 30 phút.</p></div>
+    <div class="btns"><button class="btn btn-pri btn-lg" onclick="location.href='./#dat-hang'">Đặt in ly</button></div>
+  </div>
+  <div class="fx-cols">
+    <div class="fx-brand"><p>Xưởng In Ly Magasin Cup. In tên quán lên ly nhựa, ly giấy cho quán nước ở Cần Thơ và các tỉnh miền Tây.</p>
+      <div class="fx-soc"><a class="btn btn-light btn-sm btn-icon" href="https://www.facebook.com/magasincup" target="_blank" rel="noopener" aria-label="Fanpage"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v7h4v-7h3l.5-4h-3.5V9c0-.6.4-1 1-1z" fill="currentColor"/></svg></a><a class="btn btn-light btn-sm btn-icon" href="https://m.me/magasincup" target="_blank" rel="noopener" aria-label="Messenger"><svg viewBox="0 0 24 24"><path d="M12 2.5C6.5 2.5 2.5 6.4 2.5 11.3c0 2.7 1.3 5 3.3 6.6V21l3-1.7c1 .3 2.1.4 3.2.4 5.5 0 9.5-3.9 9.5-8.8S17.5 2.5 12 2.5z" fill="currentColor"/></svg></a></div></div>
+    <div><h4 class="t-label">Liên hệ</h4><ul class="fx-list">
+      <li><a href="https://zalo.me/0386135350" target="_blank" rel="noopener"><span>Zalo</span><b class="num">0386 135 350</b></a></li>
+      <li><a href="https://zalo.me/0589438067" target="_blank" rel="noopener"><span>Zalo</span><b class="num">058 9438 067</b></a></li>
+      <li><a href="tel:0386135350"><span>Gọi</span><b class="num">0386 135 350</b></a></li></ul></div>
+    <div><h4 class="t-label">Địa chỉ xưởng</h4><p class="fx-addr">82A Nguyễn Văn Cừ nối dài, An Bình, Ninh Kiều, Cần Thơ</p>
+      <a class="btn btn-light btn-sm" href="https://www.google.com/maps/search/?api=1&amp;query=82A%20Nguy%E1%BB%85n%20V%C4%83n%20C%E1%BB%AB%20n%E1%BB%91i%20d%C3%A0i%2C%20An%20B%C3%ACnh%2C%20Ninh%20Ki%E1%BB%81u%2C%20C%E1%BA%A7n%20Th%C6%A1" target="_blank" rel="noopener">Chỉ đường</a></div>
+  </div>
+  <svg class="fx-word" viewBox="0 0 618 86" aria-hidden="true"><use href="#i-magasin" width="618" height="86"/></svg>
+  <div class="foot-b"><span><span>© 2026 <span >Xưởng In Ly Magasin Cup Cần Thơ</span></span></span><span><button onclick="location.href='./#chinh-sach-bao-mat'">Chính sách bảo mật</button></span></div>
+</div></footer>
+</body>
+</html>
