@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20261118-9">
 </head>
 <body>
 
@@ -226,16 +226,17 @@
       <div class="o-steps">
 
         <section class="card o-step" id="oStep1">
-          <div class="o-head"><span class="num-badge">1</span><div><h2 class="t-h4">Chọn ly</h2><p class="hint">Bấm vào loại ly quán bạn dùng.</p></div></div>
-          <div class="o-types" id="typeGrid"></div>
-          <div class="field"><span class="label">Dung tích</span><div class="chips" id="sizeChips"></div></div>
-          <div class="field" id="mouthField" hidden><span class="label">Cỡ miệng ly <span class="opt">(chọn cùng cỡ nắp bạn đang dùng)</span></span><div class="chips" id="mouthChips"></div></div>
-          <div class="field"><span class="label">Số lượng</span>
+          <div class="catalog-tools"><label class="catalog-search"><span class="label">Tìm sản phẩm</span><input class="inp" id="productSearch" type="search" placeholder="Tên ly, dung tích hoặc mã SKU…"></label><span class="catalog-count" id="productCount"></span></div>
+          <div class="o-head"><span class="num-badge">1</span><div><h2 class="t-h4">Chọn sản phẩm</h2><p class="hint">Đủ 232 sản phẩm thật: ly, tô, nắp, hộp, ống hút, muỗng và bọc.</p></div></div>
+          <div class="filter-group"><span class="filter-label">Danh mục sản phẩm</span><div class="product-tabs" id="productTabs" role="tablist" aria-label="Danh mục sản phẩm"></div></div>
+          <div class="filter-group" id="typeGroup"><span class="filter-label" id="typeLabel">Phân loại</span><div class="o-types" id="typeGrid"></div></div>
+          <div class="product-grid" id="productGrid"></div>
+          <div class="field product-qty"><span class="label">Số lượng mẫu đang chọn</span>
             <div class="chips" id="qtyChips"></div>
             <input class="inp qty-inp num" id="qtyCustom" inputmode="numeric" placeholder="Số khác, vd 4000" aria-label="Số lượng khác">
           </div>
-          <div class="o-lines" id="lines"></div>
-          <button type="button" class="btn btn-sec o-add" id="addLine"><svg class="ico"><use href="#i-plus"/></svg>Thêm loại ly khác</button>
+          <div class="add-to-order"><div><b id="activeProductName">Mẫu đang chọn</b><span>Thêm mẫu này vào phiếu, sau đó chọn mẫu khác nếu cần.</span></div><button type="button" class="btn btn-pri o-add" id="addLine"><svg class="ico"><use href="#i-plus"/></svg>Thêm vào phiếu</button></div>
+          <div class="order-lines"><div class="order-lines-head"><div><span class="filter-label">Sản phẩm trong phiếu</span><b id="lineCount">Chưa có sản phẩm</b></div><span class="order-lines-hint">Có thể chọn nhiều mẫu ly</span></div><div class="o-lines" id="lines"></div><div class="order-lines-empty" id="linesEmpty">Chọn một mẫu và bấm “Thêm vào phiếu”.</div></div>
         </section>
 
         <section class="card o-step" id="oStep2">
@@ -276,7 +277,11 @@
       </div>
 
       <aside class="side">
-        <div class="card o-sum"><h3 class="t-h4">Đơn của bạn</h3><div class="sum" id="sum"></div></div>
+        <div class="o-bill">
+          <div class="bill-head"><svg class="bill-logo" role="img" aria-label="Magasin Cup"><use href="#i-magasin"/></svg><span class="bill-kicker">Phiếu yêu cầu</span><h3>Đơn của bạn</h3><span class="bill-status">Chờ báo giá</span></div>
+          <div class="sum" id="sum"></div>
+          <div class="bill-note">Đây là phiếu yêu cầu. Xưởng sẽ nhắn Zalo để xác nhận mẫu, giá và ngày giao.</div>
+        </div>
         <div class="card help"><span class="ib"><svg class="ico"><use href="#i-chat"/></svg></span><div><b>Cần hỏi trước?</b>Zalo xưởng <span class="num">0386 135 350</span></div></div>
       </aside>
     </form>
@@ -314,6 +319,7 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="assets/products.js?v=20261118-9"></script>
 <script>
 (()=>{
 const TYPES=[
@@ -413,8 +419,48 @@ const TYPES=[
   {cap:'1000ml',ml:1000,v:'Kraft',fill:'kraft',c:['TG1000ECO','TG1000MK','TGHA']},
   {cap:'1000ml',ml:1000,v:'trắng',fill:'paper',c:['TG1000M','TG1000D']}]}
 ];
-const SKU_COUNT=TYPES.reduce((n,t)=>n+t.sizes.reduce((m,s)=>m+s.c.length,0),0);
+/* Dữ liệu sản phẩm thật được đồng bộ từ Google Sheets vào assets/products.js. */
+const CATALOG=window.MAGASIN_CATALOG||{stats:{},products:[],accessories:[]};
+const PRODUCT_BY_CODE=new Map();
+CATALOG.products.forEach(p=>{
+ if(!p.sku)return;
+ const current=PRODUCT_BY_CODE.get(p.sku);
+ if(!current||current.imageKind!=='exact'&&p.imageKind==='exact')PRODUCT_BY_CODE.set(p.sku,p);
+});
+const productForSize=s=>(s.c||[]).map(code=>PRODUCT_BY_CODE.get(code)).filter(Boolean);
+TYPES.forEach(t=>{
+ t.sizes.forEach(s=>{s.products=productForSize(s)});
+ const products=t.sizes.flatMap(s=>s.products);
+ const cover=products.find(p=>p.imageKind==='exact'&&p.imageUrl)||products.find(p=>p.imageUrl);
+ if(cover){t.img=cover.imageUrl;t.imageKind=cover.imageKind}
+});
+const SKU_COUNT=CATALOG.stats.cupsAndBowls||TYPES.reduce((n,t)=>n+t.sizes.reduce((m,s)=>m+s.c.length,0),0);
 const typeById=Object.fromEntries(TYPES.map(t=>[t.id,t]));
+const inferType=p=>{const n=p.name.toLowerCase();
+ if(n.includes('thố pp'))return 'tho';if(n.includes('tô giấy'))return 'to';
+ if(n.includes('pet vuông')||n.includes('pet (sq)'))return 'pet-vuong';
+ if(n.includes('ly giấy')&&n.includes('kraft'))return 'giay-kraft';if(n.includes('ly giấy'))return 'giay';
+ if(n.includes('pet')&&n.includes('màu đen'))return 'pet-den';if(n.includes('pet'))return 'pet';
+ if(n.includes('pp')&&n.includes('cứng'))return 'pp-cung';
+ if(n.includes('pp')&&n.includes('mờ')&&n.includes('màu đen'))return 'pp-den';if(n.includes('pp')&&n.includes('mờ'))return 'pp-mo';
+ if(n.includes('pp')&&(n.includes('đáy bầu')||n.includes(' bầu')))return 'pp-bau';return 'pp'};
+const productCapacity=name=>{const m=name.match(/(\d+(?:[.,]\d+)?\s*ml|\d+(?:\/\d+)?\s*oz)/i);return m?m[1].replace(/\s+/g,'').toLowerCase():''};
+const PRODUCT_ITEMS=CATALOG.products.map(p=>{const type=inferType(p),t=typeById[type]||typeById.pp;return {
+ key:'cup-'+p.sourceRow,tab:type==='to'||type==='tho'?'bowls':'cups',unit:type==='to'||type==='tho'?'tô':'ly',type,typeName:t.name,productName:p.name,sku:p.sku,cap:productCapacity(p.name),d:p.rimMm||'',v:'',codes:p.sku?[p.sku]:[],products:[p],shape:t.shape,fill:t.fill,imageUrl:p.imageUrl,imageKind:p.imageKind,sourceRow:p.sourceRow
+ }});
+const ACCESSORY_ITEMS=CATALOG.accessories.map(p=>({
+ key:'accessory-'+p.sourceRow,tab:p.group,unit:'cái',type:p.group,typeName:p.group,productName:p.name,sku:p.sku,cap:'',d:p.dimension||'',v:'',codes:p.sku?[p.sku]:[],products:[p],shape:'tron',fill:'clear',imageUrl:p.imageUrl,imageKind:p.imageKind,sourceRow:p.sourceRow
+}));
+const ALL_PRODUCT_ITEMS=[...PRODUCT_ITEMS,...ACCESSORY_ITEMS];
+const PRODUCT_ITEM_BY_KEY=new Map(ALL_PRODUCT_ITEMS.map(p=>[p.key,p]));
+const TYPE_COUNTS=PRODUCT_ITEMS.reduce((o,p)=>(o[p.type]=(o[p.type]||0)+1,o),{});
+const PRODUCT_TABS=[
+ {id:'cups',label:'Ly',icon:'assets/category-icons/cup.png',count:PRODUCT_ITEMS.filter(p=>p.tab==='cups').length},
+ {id:'bowls',label:'Tô',icon:'assets/category-icons/bowl.png',count:PRODUCT_ITEMS.filter(p=>p.tab==='bowls').length},
+ ...[
+  ['Nắp','lid.png'],['Hộp','box.png'],['Ống hút','straw.png'],['Muỗng','spoon.png'],['Bọc','bag.png']
+ ].map(([id,icon])=>({id,label:id,icon:`assets/category-icons/${icon}`,count:ACCESSORY_ITEMS.filter(p=>p.tab===id).length}))
+];
 const sizeLabel=s=>s.cap+(s.v?' '+s.v:'')+(s.d?' · Ø'+s.d:'');
 const sizeFill=(t,s)=>s.fill||t.fill, sizeShape=(t,s)=>s.shape||t.shape;
 const fmt=n=>Number(n||0).toLocaleString('vi-VN');
@@ -492,7 +538,7 @@ if(LEGAL.taxId||LEGAL.regNo){$('legalTax').textContent=(LEGAL.taxId?' Mã số t
 
 document.addEventListener('click',e=>{
  const b=e.target.closest('[data-type]');if(!b||b.closest('#typeGrid'))return;
- state.type=b.dataset.type;state.size=0;renderBuilder();go('dat-hang')});
+ state.tab=['to','tho'].includes(b.dataset.type)?'bowls':'cups';state.type=b.dataset.type;state.productKey=PRODUCT_ITEMS.find(p=>p.type===state.type)?.key||PRODUCT_ITEMS[0]?.key;renderBuilder();go('dat-hang')});
 /* "Tải logo lên": vào thẳng bước chọn ly (đã chọn sẵn Đã có logo). "Nhờ xưởng vẽ": vào thẳng phần yêu cầu logo và phụ phí */
 document.addEventListener('click',e=>{const b=e.target.closest('[data-kind]');if(!b)return;const k=b.dataset.kind;setKind(k);go('dat-hang');
  setTimeout(()=>{if(k==='B')window.scrollTo({top:$('oStep2').getBoundingClientRect().top+scrollY-100,behavior:'smooth'});else window.scrollTo({top:0})},80)});
@@ -554,40 +600,61 @@ async function copyText(txt,msg){
 
 /* ---------- Đơn ---------- */
  /* Ảnh ly: điền img:'assets/ly-xxx.png' vào TYPES (PNG nền trong). Chưa có thì hiện khung chờ. */
- const state={type:'pp',size:0,qty:1000,lines:[],kind:'A',sides:1,filesA:[],filesB:[],deliv:'Lấy tại xưởng'};
+ const state={tab:'cups',type:'all',productKey:PRODUCT_ITEMS[0]?.key||'',qty:1000,lines:[],kind:'A',sides:1,filesA:[],filesB:[],deliv:'Lấy tại xưởng'};
  const QTY=[500,1000,2000,5000];
  const DELIV=['Lấy tại xưởng','Giao trong Cần Thơ','Gửi xe đi tỉnh'];
  function chipsHTML(list,sel,key){return list.map(v=>`<button type="button" class="chip" data-${key}="${esc(v)}" aria-pressed="${sel===v}">${esc(v)}</button>`).join('')}
- const cur=()=>{const t=typeById[state.type],s=t.sizes[state.size];return {t,s}};
- const curLine=()=>{const {t,s}=cur();return s&&state.qty>=500?{type:t.id,si:state.size,typeName:t.name,cap:s.cap,v:s.v||'',d:s.d||'',codes:s.c,thick:'',qty:state.qty,shape:sizeShape(t,s),fill:sizeFill(t,s)}:null};
- const allLines=()=>{const c=curLine(),L=[...state.lines];if(c){const ex=L.find(l=>l.type===c.type&&l.si===c.si);if(!ex)L.push(c)}return L};
+ const cur=()=>PRODUCT_ITEM_BY_KEY.get(state.productKey)||ALL_PRODUCT_ITEMS[0];
+ const curLine=()=>{const p=cur();return p&&state.qty>=1?{...p,productKey:p.key,thick:'',qty:state.qty}:null};
+ const allLines=()=>[...state.lines];
+ const productMatches=(p,q)=>!q||[p.productName,p.sku,p.cap,p.d].filter(Boolean).join(' ').toLowerCase().includes(q);
+ function renderProducts(){
+  const q=$('productSearch').value.trim().toLowerCase();
+  const drinkware=['cups','bowls'].includes(state.tab);
+  const base=drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab);
+  const list=base.filter(p=>(!drinkware||state.type==='all'||p.type===state.type)&&productMatches(p,q));
+  $('productCount').textContent=`${list.length} / ${base.length} sản phẩm`;
+  $('productGrid').innerHTML=list.map(p=>`<button type="button" class="product-card" data-product="${p.key}" aria-pressed="${p.key===state.productKey}">
+   <span class="product-media">${p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="${esc(p.productName)}" loading="lazy" referrerpolicy="no-referrer">`:slotIn('Chưa có ảnh')}</span>
+   <span class="product-body"><b>${esc(p.productName)}</b><span class="product-meta">${p.sku?esc(p.sku):'Chưa có mã'}${p.d?(['cups','bowls'].includes(p.tab)?' · Miệng '+esc(p.d)+' mm':' · '+esc(p.d)):''}</span></span></button>`).join('')||'<div class="catalog-empty">Không tìm thấy sản phẩm phù hợp.</div>';
+  $('productGrid').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{const media=img.closest('.product-media');media.innerHTML=slotIn('Ảnh chưa tải được')}));
+ }
  function renderBuilder(){
-  const {t}=cur();
-  $('typeGrid').innerHTML=TYPES.map(x=>`<button type="button" class="o-type" data-t="${x.id}" aria-pressed="${x.id===state.type}">${x.img?`<span class="media"><img src="${esc(x.img)}" alt=""></span>`:`<span class="media slot">${slotIn('PNG ly')}</span>`}<span class="o-type-n">${esc(x.name)}</span></button>`).join('');
-  const curCap=t.sizes[state.size].cap,caps=[...new Set(t.sizes.map(z=>z.cap))];
-  $('sizeChips').innerHTML=caps.map(c=>`<button type="button" class="chip" data-cap="${esc(c)}" aria-pressed="${c===curCap}">${esc(c)}</button>`).join('');
-  const opts=t.sizes.map((z,i)=>({z,i})).filter(o=>o.z.cap===curCap);
-  $('mouthField').hidden=opts.length<2;
-  $('mouthChips').innerHTML=opts.map(({z,i})=>`<button type="button" class="chip" data-size="${i}" aria-pressed="${state.size===i}">${z.d?'Ø'+z.d:'Tiêu chuẩn'}${z.v?' · '+esc(z.v):''}</button>`).join('');
-  $('qtyChips').innerHTML=QTY.map(q=>`<button type="button" class="chip num" data-qty="${q}" aria-pressed="${state.qty===q&&!$('qtyCustom').value}">${fmt(q)} ly</button>`).join('');
+  $('productTabs').innerHTML=PRODUCT_TABS.map(t=>`<button type="button" role="tab" class="product-tab" data-tab="${esc(t.id)}" aria-selected="${state.tab===t.id}"><img src="${esc(t.icon)}" alt="" aria-hidden="true"><span class="product-tab-foot"><span>${esc(t.label)}</span><b>${t.count}</b></span></button>`).join('');
+  const drinkware=['cups','bowls'].includes(state.tab),tabItems=PRODUCT_ITEMS.filter(p=>p.tab===state.tab);
+  const tabTypes=TYPES.filter(x=>state.tab==='bowls'?['to','tho'].includes(x.id):!['to','tho'].includes(x.id));
+  $('typeGroup').hidden=!drinkware;
+  $('typeLabel').textContent=`Phân loại ${state.tab==='bowls'?'tô':'ly'}`;
+  $('typeGrid').innerHTML=`<button type="button" class="o-type" data-t="all" aria-pressed="${state.type==='all'}"><span class="o-type-n">Tất cả mẫu <small>${tabItems.length}</small></span></button>`+tabTypes.map(x=>`<button type="button" class="o-type" data-t="${x.id}" aria-pressed="${x.id===state.type}"><span class="o-type-n">${esc(x.name)} <small>${TYPE_COUNTS[x.id]||0}</small></span></button>`).join('');
+  renderProducts();
+  const unit=cur()?.unit||'cái';
+  $('qtyChips').innerHTML=QTY.map(q=>`<button type="button" class="chip num" data-qty="${q}" aria-pressed="${state.qty===q&&!$('qtyCustom').value}">${fmt(q)} ${unit}</button>`).join('');
   renderLines();
  }
- function lineText(l){return `${l.typeName} ${l.cap}${l.v?' '+l.v:''}${l.d?' Ø'+l.d:''}`}
+ function lineText(l){return l.productName||`${l.typeName} ${l.cap}${l.v?' '+l.v:''}${l.d?' Ø'+l.d:''}`}
  function renderLines(){
-  $('lines').innerHTML=state.lines.map((l,i)=>`<div class="line"><div><div class="t">${esc(lineText(l))}</div><div class="s num">${fmt(l.qty)} ly</div></div><button type="button" class="x" data-del="${i}" aria-label="Bỏ loại ly này">${icon('x')}</button></div>`).join('');
-  $('addLine').innerHTML=icon('plus')+(state.lines.length?'Thêm loại ly khác nữa':'Thêm loại ly khác');
+  $('lines').innerHTML=state.lines.map((l,i)=>`<div class="line"><span class="line-no">${i+1}</span><div><div class="t">${esc(lineText(l))}</div><div class="s">${esc(l.sku||'Chưa có mã')} · <span class="num">${fmt(l.qty)} ${esc(l.unit||'cái')}</span></div></div><div class="line-actions"><button type="button" class="line-edit" data-edit="${i}">Sửa</button><button type="button" class="x" data-del="${i}" aria-label="Bỏ sản phẩm này">${icon('x')}</button></div></div>`).join('');
+  const c=cur(),exists=c&&state.lines.some(l=>l.productKey===c.key);
+  $('activeProductName').textContent=c?c.productName:'Mẫu đang chọn';
+  $('addLine').innerHTML=icon(exists?'check':'plus')+(exists?'Cập nhật trong phiếu':'Thêm vào phiếu');
+  $('lineCount').textContent=state.lines.length?`${state.lines.length} mẫu đã chọn`:'Chưa có sản phẩm';
+  $('linesEmpty').hidden=state.lines.length>0;
   renderSummary();
  }
- $('typeGrid').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;state.type=b.dataset.t;state.size=0;renderBuilder()});
- $('sizeChips').addEventListener('click',e=>{const b=e.target.closest('[data-cap]');if(!b)return;const t=typeById[state.type];state.size=t.sizes.findIndex(z=>z.cap===b.dataset.cap);renderBuilder()});
- $('mouthChips').addEventListener('click',e=>{const b=e.target.closest('[data-size]');if(!b)return;state.size=+b.dataset.size;renderBuilder()});
+ $('productTabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;state.tab=b.dataset.tab;state.type='all';const drinkware=['cups','bowls'].includes(state.tab),base=drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab);state.productKey=base[0]?.key||state.productKey;$('productSearch').value='';renderBuilder()});
+ $('typeGrid').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;state.type=b.dataset.t;state.productKey=PRODUCT_ITEMS.find(p=>p.tab===state.tab&&(state.type==='all'||p.type===state.type))?.key||state.productKey;renderBuilder()});
+ $('productGrid').addEventListener('click',e=>{const b=e.target.closest('[data-product]');if(!b)return;state.productKey=b.dataset.product;renderProducts();renderLines()});
+ $('productSearch').addEventListener('input',renderProducts);
  $('qtyChips').addEventListener('click',e=>{const b=e.target.closest('[data-qty]');if(!b)return;state.qty=+b.dataset.qty;$('qtyCustom').value='';renderBuilder()});
  $('qtyCustom').addEventListener('input',e=>{const n=parseInt(e.target.value.replace(/\D/g,''),10);e.target.value=isNaN(n)?'':n;if(n)state.qty=n;
-  document.querySelectorAll('#qtyChips .chip').forEach(c=>c.setAttribute('aria-pressed',!e.target.value&&+c.dataset.qty===state.qty));renderSummary()});
- $('addLine').addEventListener('click',()=>{const c=curLine();if(!c){toast('Tối thiểu 500 ly');return}
-  const ex=state.lines.find(l=>l.type===c.type&&l.si===c.si);if(ex)ex.qty+=c.qty;else state.lines.push(c);
-  toast('Đã thêm '+fmt(c.qty)+' ly '+c.cap+'. Chọn tiếp loại ly khác.');renderLines()});
- $('lines').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(!b)return;state.lines.splice(+b.dataset.del,1);renderLines()});
+  document.querySelectorAll('#qtyChips .chip').forEach(c=>c.setAttribute('aria-pressed',!e.target.value&&+c.dataset.qty===state.qty));renderLines()});
+ $('addLine').addEventListener('click',()=>{const c=curLine();if(!c){toast('Nhập số lượng sản phẩm');return}
+  const ex=state.lines.find(l=>l.productKey===c.productKey);
+  if(ex){ex.qty=c.qty;toast('Đã cập nhật '+fmt(c.qty)+' '+c.unit+' · '+c.productName)}else{state.lines.push(c);toast('Đã thêm vào phiếu · '+c.productName)}
+  renderLines()});
+ $('lines').addEventListener('click',e=>{const del=e.target.closest('[data-del]'),edit=e.target.closest('[data-edit]');
+  if(del){state.lines.splice(+del.dataset.del,1);renderLines();return}
+  if(edit){const l=state.lines[+edit.dataset.edit];if(!l)return;state.tab=l.tab;state.type=['cups','bowls'].includes(l.tab)?l.type:'all';state.productKey=l.productKey;state.qty=l.qty;$('productSearch').value='';$('qtyCustom').value=QTY.includes(l.qty)?'':l.qty;renderBuilder();$('productGrid').scrollIntoView({behavior:'smooth',block:'center'});toast('Đang sửa · '+l.productName)}});
 
 /* ---------- Logo ---------- */
 function setKind(k){state.kind=k;$('kindA').setAttribute('aria-pressed',k==='A');$('kindB').setAttribute('aria-pressed',k==='B');$('paneA').hidden=k!=='A';$('paneB').hidden=k!=='B';renderSummary()}
@@ -613,23 +680,24 @@ $('deliv').addEventListener('click',e=>{const b=e.target.closest('[data-deliv]')
 
 /* ---------- Tóm tắt ---------- */
 function renderSummary(){
- const L=allLines(),tot=L.reduce((a,l)=>a+l.qty,0);
+ const L=allLines(),tot=L.reduce((a,l)=>a+l.qty,0),hasPrint=L.some(l=>['cups','bowls'].includes(l.tab));
  $('sum').innerHTML=`
-  ${L.length?L.map(l=>`<div class="r"><span>${esc(lineText(l))}</span><span class="num">${fmt(l.qty)}</span></div>`).join(''):'<div class="r"><span>Ly</span><span>Chưa chọn</span></div>'}
-  <div class="r"><span>Logo</span><span>${state.kind==='A'?(state.filesA.length?state.filesA.length+' hình':'Chưa tải'):'Xưởng vẽ giúp'}</span></div>
-  <div class="r"><span>In</span><span>${state.sides} mặt</span></div>
-  <div class="r"><span>Nhận hàng</span><span>${esc(state.deliv)}</span></div>
-  <div class="r tot"><span>Tổng</span><span class="num">${fmt(tot)} ly</span></div>
-  <div class="r"><span>Giá</span><span class="hl">Báo qua Zalo</span></div>`;
+  <div class="bill-items">${L.length?L.map((l,i)=>`<div class="bill-item"><span class="bill-index">${i+1}</span><span class="bill-product"><b>${esc(lineText(l))}</b><small>${esc(l.sku||'Chưa có mã')}</small></span><strong class="num">${fmt(l.qty)}<small>${esc(l.unit||'cái')}</small></strong></div>`).join(''):'<div class="bill-empty">Chưa chọn sản phẩm</div>'}</div>
+  <div class="bill-details">
+   ${hasPrint?`<div class="bill-row"><span>Logo</span><strong>${state.kind==='A'?(state.filesA.length?state.filesA.length+' hình':'Chưa tải'):'Xưởng vẽ giúp'}</strong></div><div class="bill-row"><span>Quy cách in</span><strong>${state.sides} mặt</strong></div>`:''}
+   <div class="bill-row"><span>Nhận hàng</span><strong>${esc(state.deliv)}</strong></div>
+  </div>
+  <div class="bill-total"><span>Tổng số lượng<small>${L.length} sản phẩm</small></span><strong class="num">${fmt(tot)}<small>đơn vị</small></strong></div>
+  <div class="bill-price"><span>Giá đơn hàng</span><strong>Báo qua Zalo</strong></div>`;
 }
 
 /* ---------- Kiểm tra ---------- */
 const normPhone=p=>p.replace(/[^\d+]/g,'').replace(/^\+84/,'0');
 function checkAll(){
- const e=[];['cName','cPhone','bShop','cShop'].forEach(id=>$(id).classList.remove('err'));
- if(!allLines().length)e.push(['oStep1','Chọn ly và số lượng (tối thiểu 500 ly)']);
- if(state.kind==='A'&&!state.filesA.length)e.push(['oStep2','Tải hình logo lên']);
- if(state.kind==='B'&&!$('bShop').value.trim()){e.push(['oStep2','Điền tên quán in lên ly']);$('bShop').classList.add('err')}
+ const e=[],lines=allLines(),hasPrint=lines.some(l=>['cups','bowls'].includes(l.tab));['cName','cPhone','bShop','cShop'].forEach(id=>$(id).classList.remove('err'));
+ if(!lines.length)e.push(['oStep1','Chọn sản phẩm và số lượng']);
+ if(hasPrint&&state.kind==='A'&&!state.filesA.length)e.push(['oStep2','Tải hình logo lên']);
+ if(hasPrint&&state.kind==='B'&&!$('bShop').value.trim()){e.push(['oStep2','Điền tên quán in lên ly']);$('bShop').classList.add('err')}
  if(!$('cName').value.trim()){e.push(['oStep3','Điền tên bạn']);$('cName').classList.add('err')}
  if(!/^0\d{9}$/.test(normPhone($('cPhone').value))){e.push(['oStep3','Số Zalo cần 10 số, bắt đầu bằng 0']);$('cPhone').classList.add('err')}
  if(!$('cShop').value.trim()){e.push(['oStep3','Điền tên quán']);$('cShop').classList.add('err')}
@@ -644,10 +712,11 @@ $('orderForm').addEventListener('submit',e=>e.preventDefault());
 /* ---------- Gửi ---------- */
 function orderCode(){const d=new Date(),p=n=>String(n).padStart(2,'0');return 'MC'+p(d.getDate())+p(d.getMonth()+1)+'-'+Math.random().toString(36).slice(2,6).toUpperCase()}
 function orderText(o){
- const L=(o.lines||[]).map(l=>`- ${lineText(l)}: ${fmt(l.qty)} ly${l.thick?' ('+l.thick+')':''}`).join('\n');
- let t=`ĐƠN IN LY ${o.code}\nKhách: ${o.contact.name} · Zalo ${o.contact.phone}\nQuán: ${o.contact.shop}\n\nLy:\n${L}\nTổng: ${fmt(o.total)} ly · In ${o.sides} mặt\n`;
- if(o.kind==='A')t+=`\nLogo: đã có (${(o.files||[]).map(f=>f.name).join(', ')})${o.logoNote?'\nGhi chú logo: '+o.logoNote:''}\n`;
- else{const b=o.brief;t+=`\nCần thiết kế logo (có phụ phí)\n- Tên in: ${b.shop}${b.wish?'\n- Mong muốn: '+b.wish:''}${b.style?'\n- Phong cách: '+b.style:''}`+(o.files&&o.files.length?`\n- Ảnh mẫu: ${o.files.map(f=>f.name).join(', ')}`:'')+'\n'}
+ const lines=o.lines||[],hasPrint=lines.some(l=>['cups','bowls'].includes(l.tab));
+ const L=lines.map(l=>`- ${lineText(l)}: ${fmt(l.qty)} ${l.unit||'cái'}${l.thick?' ('+l.thick+')':''}`).join('\n');
+ let t=`ĐƠN SẢN PHẨM ${o.code}\nKhách: ${o.contact.name} · Zalo ${o.contact.phone}\nQuán: ${o.contact.shop}\n\nSản phẩm:\n${L}\nTổng: ${fmt(o.total)} đơn vị\n`;
+ if(hasPrint&&o.kind==='A')t+=`\nLogo: đã có (${(o.files||[]).map(f=>f.name).join(', ')})${o.logoNote?'\nGhi chú logo: '+o.logoNote:''}\n`;
+ else if(hasPrint){const b=o.brief;t+=`\nCần thiết kế logo (có phụ phí)\n- Tên in: ${b.shop}${b.wish?'\n- Mong muốn: '+b.wish:''}${b.style?'\n- Phong cách: '+b.style:''}`+(o.files&&o.files.length?`\n- Ảnh mẫu: ${o.files.map(f=>f.name).join(', ')}`:'')+'\n'}
  t+=`\nNhận hàng: ${o.contact.deliv}${o.contact.province?' ('+o.contact.province+')':''}${o.contact.needBy?'\nCần trước: '+o.contact.needBy.split('-').reverse().join('/'):''}${o.contact.note?'\nGhi chú: '+o.contact.note:''}`;
  return t;
 }
@@ -656,7 +725,9 @@ async function submit(){
  if(submitting)return;submitting=true;const nb=$('nextBtn');nb.disabled=true;nb.textContent='Đang gửi…';
  const files=state.kind==='A'?state.filesA:state.filesB;
  const o={code:orderCode(),createdAt:Date.now(),status:'moi',kind:state.kind,sides:state.sides,
-  lines:allLines().map(l=>({typeName:l.typeName,cap:l.cap,v:l.v,d:l.d,codes:l.codes,thick:l.thick,qty:l.qty,shape:l.shape,fill:l.fill})),
+  lines:allLines().map(l=>({productKey:l.productKey,productName:l.productName,sku:l.sku,tab:l.tab,unit:l.unit,typeName:l.typeName,cap:l.cap,v:l.v,d:l.d,codes:l.codes,
+   products:(l.products||[]).map(p=>({sourceRow:p.sourceRow,group:p.group,sku:p.sku,name:p.name,rimMm:p.rimMm,baseMm:p.baseMm,heightMm:p.heightMm,dimension:p.dimension,imageUrl:p.imageUrl,sourceUrl:p.sourceUrl})),
+   thick:l.thick,qty:l.qty,shape:l.shape,fill:l.fill})),
   total:allLines().reduce((a,l)=>a+l.qty,0),logoNote:'',
   brief:state.kind==='B'?{shop:$('bShop').value.trim(),wish:$('bWish').value.trim(),slogan:'',sell:[],style:'',colors:[],phone:'',fanpage:'',addr:'',avoid:''}:null,
   files:files.map(f=>({name:f.name,id:'',url:''})),
