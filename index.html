@@ -529,7 +529,7 @@ if($('factSku'))$('factSku').textContent=SKU_COUNT+'+';
 /* ---------- Ảnh ----------
    Mỗi khung ảnh có data-img: mã ảnh Unsplash (photo-...) hoặc link ảnh đầy đủ (https://...).
    Muốn thay ảnh thật: đổi data-img thành link ảnh của xưởng. Ảnh lỗi hoặc bị chặn thì hiện khung chờ. */
-const U=(id,w)=>/^https?:/.test(id)?id:`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=72`;
+const U=(id,w)=>/^(?:https?:|data:|blob:|\/|\.{1,2}\/)/.test(id)||id.includes('/')?id:`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=72`;
 const slotIn=label=>`<div class="slot-in">${icon('image')}<span>${esc(label)}</span></div>`;
 const phHTML=label=>`<div class="ph">${icon('image')}<span>${esc(label||'Ảnh')}</span></div>`;
 function loadImgs(root){
