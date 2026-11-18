@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261118-17">
+<link rel="stylesheet" href="styles.css?v=20261118-18">
 </head>
 <body>
 
@@ -317,7 +317,7 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/products.js?v=20261118-17"></script>
+<script src="assets/products.js?v=20261118-18"></script>
 <script>
 (()=>{
 const TYPES=[
@@ -451,7 +451,6 @@ const ACCESSORY_ITEMS=CATALOG.accessories.map(p=>({
 }));
 const ALL_PRODUCT_ITEMS=[...PRODUCT_ITEMS,...ACCESSORY_ITEMS];
 const PRODUCT_ITEM_BY_KEY=new Map(ALL_PRODUCT_ITEMS.map(p=>[p.key,p]));
-$('catalogSummary').textContent=`${ALL_PRODUCT_ITEMS.length} sản phẩm: ly, tô, nắp, hộp, ống hút, muỗng và bọc.`;
 const TYPE_COUNTS=PRODUCT_ITEMS.reduce((o,p)=>(o[p.type]=(o[p.type]||0)+1,o),{});
 const PRODUCT_TABS=[
  {id:'cups',label:'Ly',icon:'assets/category-icons/cup.png',count:PRODUCT_ITEMS.filter(p=>p.tab==='cups').length},
@@ -465,6 +464,7 @@ const sizeFill=(t,s)=>s.fill||t.fill, sizeShape=(t,s)=>s.shape||t.shape;
 const fmt=n=>Number(n||0).toLocaleString('vi-VN');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=id=>document.getElementById(id);
+$('catalogSummary').textContent=`${ALL_PRODUCT_ITEMS.length} sản phẩm: ly, tô, nắp, hộp, ống hút, muỗng và bọc.`;
 const icon=(n,cls='ico')=>`<svg class="${cls}"><use href="#i-${n}"/></svg>`;
 
 /* ---------- Vẽ ly ---------- */
