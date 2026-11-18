@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261118-10">
+<link rel="stylesheet" href="styles.css?v=20261118-11">
 </head>
 <body>
 
@@ -221,7 +221,7 @@
 <!-- ============ ĐẶT HÀNG ============ -->
 <main id="v-dat-hang" class="page" hidden>
   <div class="wrap">
-    <div class="page-head order-page-head"><div><h1>Đặt in nhanh</h1><p>3 bước, chưa tới 3 phút. Báo giá qua Zalo.</p></div><div class="catalog-tools"><label class="catalog-search"><input class="inp" id="productSearch" type="search" aria-label="Tìm sản phẩm" placeholder="Tìm tên, dung tích hoặc mã SKU…"></label><span class="catalog-count num" id="productCount" aria-live="polite"></span></div></div>
+    <div class="page-head order-page-head"><div><h1>Đặt in nhanh</h1><p>3 bước, chưa tới 3 phút. Báo giá qua Zalo.</p></div><div class="catalog-tools"><label class="catalog-search"><input class="inp" id="productSearch" type="search" aria-label="Tìm sản phẩm" placeholder="Tìm tên, dung tích hoặc mã SKU…"></label></div></div>
     <form class="order" id="orderForm" novalidate>
       <div class="o-steps">
 
@@ -234,7 +234,7 @@
             <div class="chips" id="qtyChips"></div>
             <input class="inp qty-inp num" id="qtyCustom" inputmode="numeric" placeholder="Số khác, vd 4000" aria-label="Số lượng khác">
           </div>
-          <div class="add-to-order"><div><b id="activeProductName">Mẫu đang chọn</b><span>Thêm mẫu này vào phiếu, sau đó chọn mẫu khác nếu cần.</span></div><button type="button" class="btn btn-pri o-add" id="addLine"><svg class="ico"><use href="#i-plus"/></svg>Thêm vào phiếu</button></div>
+          <div class="add-to-order"><div><b id="activeProductName">Mẫu đang chọn</b><span class="num" id="activeProductQty">1.000 ly</span></div><button type="button" class="btn btn-pri o-add" id="addLine"><svg class="ico"><use href="#i-plus"/></svg>Thêm vào phiếu</button></div>
           <div class="order-lines"><div class="order-lines-head"><div><span class="filter-label">Sản phẩm trong phiếu</span><b id="lineCount">Chưa có sản phẩm</b></div><span class="order-lines-hint">Có thể chọn nhiều mẫu ly</span></div><div class="o-lines" id="lines"></div><div class="order-lines-empty" id="linesEmpty">Chọn một mẫu và bấm “Thêm vào phiếu”.</div></div>
         </section>
 
@@ -316,7 +316,7 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/products.js?v=20261118-10"></script>
+<script src="assets/products.js?v=20261118-11"></script>
 <script>
 (()=>{
 const TYPES=[
@@ -610,7 +610,6 @@ async function copyText(txt,msg){
   const drinkware=['cups','bowls'].includes(state.tab);
   const base=drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab);
   const list=base.filter(p=>(!drinkware||state.type==='all'||p.type===state.type)&&productMatches(p,q));
-  $('productCount').textContent=`${list.length}/${base.length}`;
   $('productGrid').innerHTML=list.map(p=>`<button type="button" class="product-card" data-product="${p.key}" aria-pressed="${p.key===state.productKey}">
    <span class="product-media">${p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="${esc(p.productName)}" loading="lazy" referrerpolicy="no-referrer">`:slotIn('Chưa có ảnh')}</span>
    <span class="product-body"><b>${esc(p.productName)}</b><span class="product-meta">${p.sku?esc(p.sku):'Chưa có mã'}${p.d?(['cups','bowls'].includes(p.tab)?' · Miệng '+esc(p.d)+' mm':' · '+esc(p.d)):''}</span></span></button>`).join('')||'<div class="catalog-empty">Không tìm thấy sản phẩm phù hợp.</div>';
@@ -633,6 +632,7 @@ async function copyText(txt,msg){
   $('lines').innerHTML=state.lines.map((l,i)=>`<div class="line"><span class="line-no">${i+1}</span><div><div class="t">${esc(lineText(l))}</div><div class="s">${esc(l.sku||'Chưa có mã')} · <span class="num">${fmt(l.qty)} ${esc(l.unit||'cái')}</span></div></div><div class="line-actions"><button type="button" class="line-edit" data-edit="${i}">Sửa</button><button type="button" class="x" data-del="${i}" aria-label="Bỏ sản phẩm này">${icon('x')}</button></div></div>`).join('');
   const c=cur(),exists=c&&state.lines.some(l=>l.productKey===c.key);
   $('activeProductName').textContent=c?c.productName:'Mẫu đang chọn';
+  $('activeProductQty').textContent=c?`${fmt(state.qty)} ${c.unit||'cái'}`:'';
   $('addLine').innerHTML=icon(exists?'check':'plus')+(exists?'Cập nhật trong phiếu':'Thêm vào phiếu');
   $('lineCount').textContent=state.lines.length?`${state.lines.length} mẫu đã chọn`:'Chưa có sản phẩm';
   $('linesEmpty').hidden=state.lines.length>0;
