@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>MAGASIN Cup · In ly mang tên quán</title>
-<meta name="description" content="Chọn ly, gửi logo và nhận báo giá in qua Zalo. MAGASIN Cup nhận in từ 500 ly, giao tại Cần Thơ và đi tỉnh.">
+<title>Magasin Cup</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +46,7 @@
     </button>
     <div class="top-r">
       <button class="top-link" data-go="thu-vien-prompt" data-nav="thu-vien-prompt"><span class="top-link-full">Tạo logo AI</span><span class="top-link-short">Logo AI</span></button>
-      <button class="btn btn-light" data-go="dat-hang">Đặt in</button>
+      <button class="btn btn-light" data-go="dat-hang">Đặt in nhanh</button>
     </div>
   </div>
 </header>
@@ -56,20 +55,20 @@
 <main id="v-trang-chu">
 
   <section class="sec hx" id="s-hero">
-    <div class="hx-bg"><img src="assets/hero-xuong-v2.jpg" alt="Thợ in tại xưởng đang in lụa biểu tượng một màu lên ly nhựa" fetchpriority="high"></div>
+    <div class="hx-bg"><img src="assets/hero-xuong.jpg" alt="Nhân viên xưởng MAGASIN in lụa logo lên ly, phía trước là ly giấy và ly nhựa đã in" fetchpriority="high"></div>
     <div class="wrap hx-in">
       <div class="hx-copy">
-        <h1 class="t-display">Chiếc ly mang tên quán,<br>khách nhớ lâu hơn</h1>
-        <p class="hx-sub t-lead">Chọn mẫu, gửi logo, nhận báo giá qua Zalo. Xưởng nhận in từ 500 ly và gửi mẫu duyệt trước khi sản xuất.</p>
+        <h1 class="t-display">In ấn kinh doanh dễ dàng,<br>chi phí tối ưu</h1>
+        <p class="hx-sub t-lead">Khách cầm ly đi tới đâu, tên quán theo tới đó. Gửi logo, xưởng báo giá qua Zalo trong 30 phút.</p>
       </div>
-      <div class="btns"><button class="btn btn-pri btn-lg" data-go="dat-hang">Chọn ly &amp; đặt in</button></div>
+      <div class="btns"><button class="btn btn-pri btn-lg" data-go="dat-hang">Đặt in nhanh</button></div>
     </div>
   </section>
 
   <section class="sec sec--white" id="s-logo">
     <div class="wrap">
       <div class="sec-head sec-head--story">
-        <h2 class="t-h2">Bạn đang ở bước nào?<br><span class="hl">MAGASIN lo tiếp phần còn lại</span></h2>
+        <h2 class="t-h2">Cũng là chủ quán như bạn,<br>mình biết bạn đang <span class="hl">"kẹt"</span> ở đâu</h2>
       </div>
       <div class="ket-grid" id="ketGrid"></div>
     </div>
@@ -78,43 +77,43 @@
   <section class="sec sec--sand" id="s-show">
     <div class="wrap">
       <div class="sec-head sec-head--split"><h2 class="t-h1">Khách hàng đã in<br>tại <span class="hl">MAGASIN</span></h2>
-        <button class="btn btn-pri" data-go="dat-hang">Tạo phiếu đặt in</button></div>
+        <button class="btn btn-pri" data-go="dat-hang">Đặt in nhanh</button></div>
     </div>
     <div class="loop" id="clientsLoop"><div class="loop-track" id="clients"></div></div>
   </section>
 
   <section class="sec sec--white" id="s-vs">
     <div class="wrap">
-      <div class="sec-head"><h2 class="t-h1">Đồ uống được nhớ bằng vị.<br><span class="hl">Quán được nhớ bằng chiếc ly.</span></h2><p class="sec-sub">Một dấu nhận diện nhỏ cũng đủ để ly của quán không lẫn với hàng trăm chiếc ly khác.</p></div>
+      <div class="sec-head"><h2 class="t-h1">Ly trơn vs <span class="hl">Ly in logo MAGASIN</span></h2><p class="sec-sub">Cùng một ly nước, nhưng khách nhớ quán khác hẳn.</p></div>
       <div class="vs-box">
         <div class="vs-col l">
-          <span class="tag">Ly trơn</span><h3 class="t-h3">Đựng được đồ uống</h3>
-          <div class="media"><img src="assets/vs-ly-tron-v2.jpg" alt="Ly cà phê sữa đá bằng nhựa trong, không có logo" loading="lazy"></div>
-          <ul class="checklist checklist--mute"><li>Khó nhận ra ly của quán nào</li><li>Không có điểm nhận diện riêng</li><li>Ít giá trị khi khách mang đi</li></ul>
+          <span class="tag">Ly trơn</span><h3 class="t-h3">Không in logo</h3>
+          <div class="media"><img src="assets/vs-ly-tron.jpg" alt="Ly cà phê sữa đá trong ly nhựa trơn, không in logo" loading="lazy"></div>
+          <ul class="checklist checklist--mute"><li>Khách uống xong là quên quán</li><li>Ly quán nào cũng giống nhau</li><li>Không ai chụp hình khoe</li></ul>
         </div>
         <div class="vs-col r">
-          <span class="tag tag--brand">Ly in logo</span><h3 class="t-h3">Mang theo tên quán</h3>
-          <div class="media"><img src="assets/vs-ly-logo-v2.jpg" alt="Ly cà phê sữa đá in biểu tượng xanh một màu" loading="lazy"></div>
-          <ul class="checklist checklist--brand"><li>Nhìn là nhận ra ly của quán</li><li>Hình ảnh đồng nhất, chuyên nghiệp hơn</li><li>Mỗi đơn mang thương hiệu đi xa hơn</li></ul>
+          <span class="tag tag--brand">Ly in logo</span><h3 class="t-h3">In tên quán tại MAGASIN</h3>
+          <div class="media"><img src="assets/vs-ly-logo.jpg" alt="Cùng ly cà phê sữa đá, ly in logo quán màu xanh" loading="lazy"></div>
+          <ul class="checklist checklist--brand"><li>Khách nhớ tên, quay lại mua</li><li>Ly đẹp, khách chụp hình đăng mạng</li><li>Ly đi tới đâu, quán nổi tới đó</li></ul>
         </div>
       </div>
-      <div class="sec-cta"><button class="btn btn-pri btn-lg" data-go="dat-hang">Tạo phiếu đặt in</button></div>
+      <div class="sec-cta"><button class="btn btn-pri btn-lg" data-go="dat-hang">Đặt in nhanh</button></div>
     </div>
   </section>
 
   <section class="sec sec--blue" id="s-pl">
     <div class="wrap">
-      <div class="sec-head"><h2 class="t-h1">Từ ý tưởng đến ly thật,<br><span class="hl">mọi bước đều rõ ràng</span></h2></div>
+      <div class="sec-head"><h2 class="t-h1">In ly tại <span class="hl">MAGASIN</span>,<br>dễ hơn bạn nghĩ</h2></div>
       <div class="feat-scroll" id="featScroll">
         <div class="feat-steps">
-          <div class="feat-body feat-step on" data-fs="0"><div class="media feat-step-media"><img src="assets/dat-in-dien-thoai-v2.jpg" alt="Chủ quán chọn mẫu ly và gửi logo trên điện thoại" loading="lazy"></div><span class="feat-num">01</span><h3 class="t-h2">Đặt yêu cầu<br><span class="hl">chưa tới 3 phút</span></h3><ul class="feat-list"><li><svg class="ico"><use href="#i-check"/></svg>Chọn đúng mẫu và số lượng trên web</li><li><svg class="ico"><use href="#i-check"/></svg>Thêm nhiều loại sản phẩm vào cùng một phiếu</li><li><svg class="ico"><use href="#i-check"/></svg>Gửi logo, không cần tạo tài khoản</li><li><svg class="ico"><use href="#i-check"/></svg>Nhận báo giá trực tiếp qua Zalo</li></ul><button class="btn btn-pri btn-lg" data-go="dat-hang">Chọn sản phẩm</button></div>
-          <div class="feat-body feat-step" data-fs="1"><div class="media feat-step-media"><img src="assets/ai-logo-v2.jpg" alt="Chủ quán chỉnh biểu tượng logo trên máy tính trước khi in" loading="lazy"></div><span class="feat-num">02</span><h3 class="t-h2">Chưa có logo?<br><span class="hl">Bắt đầu bằng một câu lệnh</span></h3><ul class="feat-list"><li><svg class="ico"><use href="#i-check"/></svg>Chọn một trong 12 phong cách có sẵn</li><li><svg class="ico"><use href="#i-check"/></svg>Copy câu lệnh vào ChatGPT, Gemini hoặc Copilot</li><li><svg class="ico"><use href="#i-check"/></svg>Chỉnh tiếp với AI tới khi đúng ý quán</li><li><svg class="ico"><use href="#i-check"/></svg>Xuất PNG nền trong suốt để gửi xưởng</li></ul><button class="btn btn-pri btn-lg" data-go="thu-vien-prompt">Tạo logo với AI</button></div>
-          <div class="feat-body feat-step" data-fs="2"><div class="media feat-step-media"><img src="assets/nhieu-loai-ly-v2.jpg" alt="Nhiều loại ly, tô, nắp, ống hút và muỗng tại xưởng" loading="lazy"></div><span class="feat-num">03</span><h3 class="t-h2">Chọn đúng bao bì,<br><span class="hl">đúng nhu cầu quán</span></h3><ul class="feat-list"><li><svg class="ico"><use href="#i-check"/></svg>Ly PP, PET, ly giấy và tô giấy</li><li><svg class="ico"><use href="#i-check"/></svg>Có nắp, ống hút, muỗng và bọc đi kèm</li><li><svg class="ico"><use href="#i-check"/></svg>Nhận in từ 500 ly</li><li><svg class="ico"><use href="#i-check"/></svg>Chốt giá và mẫu trước khi sản xuất</li></ul><a class="btn btn-pri btn-lg" href="https://zalo.me/0386135350" target="_blank" rel="noopener">Hỏi xưởng qua Zalo</a></div>
+          <div class="feat-body feat-step on" data-fs="0"><div class="media feat-step-media"><img src="assets/dat-in-dien-thoai.jpg" alt="Chủ quán cầm ly mẫu, đặt in ly trên điện thoại" loading="lazy"></div><span class="feat-num">01</span><h3 class="t-h2">In nhanh chỉ<br><span class="hl">4 bước tiện lợi</span></h3><ul class="feat-list"><li><svg class="ico"><use href="#i-check"/></svg>Chọn ly và số lượng ngay trên web</li><li><svg class="ico"><use href="#i-check"/></svg>Gửi logo, không cần tạo tài khoản</li><li><svg class="ico"><use href="#i-check"/></svg>Xưởng nhắn Zalo báo giá trong 30 phút</li><li><svg class="ico"><use href="#i-check"/></svg>Ưng mẫu mới in, giao tận nơi</li></ul><button class="btn btn-pri btn-lg" data-go="dat-hang">Đặt in nhanh</button></div>
+          <div class="feat-body feat-step" data-fs="1"><div class="media feat-step-media"><img src="assets/ai-logo.jpg" alt="Chủ quán dùng AI làm logo, xem các mẫu logo trên điện thoại" loading="lazy"></div><span class="feat-num">02</span><h3 class="t-h2">Tự làm chủ cá tính<br><span class="hl">thương hiệu cùng AI</span></h3><ul class="feat-list"><li><svg class="ico"><use href="#i-check"/></svg>Dán câu lệnh, kể về quán là có logo</li><li><svg class="ico"><use href="#i-check"/></svg>Dùng ChatGPT, Gemini, Copilot miễn phí</li><li><svg class="ico"><use href="#i-check"/></svg>12 phong cách: chibi, thư pháp, nhí nhảnh, hiện đại…</li><li><svg class="ico"><use href="#i-check"/></svg>Ưng hình nào, gửi xưởng in hình đó</li></ul><button class="btn btn-pri btn-lg" data-go="thu-vien-prompt">Xem thư viện câu lệnh</button></div>
+          <div class="feat-body feat-step" data-fs="2"><div class="media feat-step-media"><img src="assets/nhieu-loai-ly.jpg" alt="Nhiều loại ly nhựa, ly giấy đủ cỡ tại xưởng, ly mẫu đã in logo" loading="lazy"></div><span class="feat-num">03</span><h3 class="t-h2">Chi phí tối ưu,<br><span class="hl">phù hợp mọi ngân sách</span></h3><ul class="feat-list"><li><svg class="ico"><use href="#i-check"/></svg>Nhận đơn từ 500 ly</li><li><svg class="ico"><use href="#i-check"/></svg>In càng nhiều, giá mỗi ly càng rẻ</li><li><svg class="ico"><use href="#i-check"/></svg>Đủ loại ly nhựa, ly giấy, nhiều cỡ</li><li><svg class="ico"><use href="#i-check"/></svg>Báo giá rõ ràng trước khi in</li></ul><a class="btn btn-pri btn-lg" href="https://zalo.me/0386135350" target="_blank" rel="noopener">Nhận báo giá qua Zalo</a></div>
         </div>
         <div class="feat-visual">
-          <div class="feat-vis on" data-fv="0"><div class="media"><img src="assets/dat-in-dien-thoai-v2.jpg" alt="Chủ quán chọn mẫu ly và gửi logo trên điện thoại" loading="lazy"></div></div>
-          <div class="feat-vis" data-fv="1"><div class="media"><img src="assets/ai-logo-v2.jpg" alt="Chủ quán chỉnh biểu tượng logo trên máy tính trước khi in" loading="lazy"></div></div>
-          <div class="feat-vis" data-fv="2"><div class="media"><img src="assets/nhieu-loai-ly-v2.jpg" alt="Nhiều loại ly, tô, nắp, ống hút và muỗng tại xưởng" loading="lazy"></div></div>
+          <div class="feat-vis on" data-fv="0"><div class="media"><img src="assets/dat-in-dien-thoai.jpg" alt="Chủ quán cầm ly mẫu, đặt in ly trên điện thoại" loading="lazy"></div></div>
+          <div class="feat-vis" data-fv="1"><div class="media"><img src="assets/ai-logo.jpg" alt="Chủ quán dùng AI làm logo, xem các mẫu logo trên điện thoại" loading="lazy"></div></div>
+          <div class="feat-vis" data-fv="2"><div class="media"><img src="assets/nhieu-loai-ly.jpg" alt="Nhiều loại ly nhựa, ly giấy đủ cỡ tại xưởng, ly mẫu đã in logo" loading="lazy"></div></div>
         </div>
       </div>
     </div>
@@ -124,11 +123,11 @@
   <section class="sec sec--white" id="s-qa">
     <div class="wrap qa-grid">
       <div class="qa-l">
-        <h2 class="t-h1">Trước khi đặt,<br><span class="hl">bạn cần biết gì?</span></h2>
-        <p class="t-lead">Thông tin ngắn gọn để bạn chọn đúng và chủ động trước khi xưởng báo giá.</p>
-        <a class="btn btn-pri btn-lg" href="https://zalo.me/0386135350" target="_blank" rel="noopener">Nhắn xưởng tư vấn</a>
+        <h2 class="t-h1">Bạn hỏi, <span class="hl">MAGASIN</span> trả lời</h2>
+        <p class="t-lead">Những câu chủ quán hay hỏi nhất. Chưa có câu bạn cần? Nhắn Zalo, xưởng trả lời trong 30 phút.</p>
+        <a class="btn btn-pri btn-lg" href="https://zalo.me/0386135350" target="_blank" rel="noopener">Hỏi thêm qua Zalo</a>
       </div>
-      <div class="acc"><details open><summary>Đơn tối thiểu là bao nhiêu?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Xưởng nhận in từ 500 ly cho mỗi mẫu. Số lượng càng lớn, đơn giá thường càng tốt.</p></details><details><summary>Vì sao website chưa hiện giá?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Giá phụ thuộc loại ly, số lượng, số mặt in và file logo. Bạn gửi phiếu, xưởng kiểm tra rồi báo đúng giá qua Zalo.</p></details><details><summary>Chưa có logo vẫn đặt được không?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Được. Bạn có thể dùng thư viện câu lệnh để tự làm với AI, hoặc chọn “Chưa có logo” để xưởng báo thêm phí thiết kế.</p></details><details><summary>Có được duyệt mẫu trước khi in?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Có. Xưởng gửi hình mô phỏng để bạn kiểm tra vị trí, kích thước và nội dung trước khi sản xuất.</p></details><details><summary>Xưởng có những loại sản phẩm nào?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Có ly PP, PET, ly giấy, tô giấy cùng nắp, ống hút, muỗng và bọc. Danh mục trên form là dữ liệu sản phẩm thật của xưởng.</p></details><details><summary>Nên gửi logo định dạng nào?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Tốt nhất là PNG nền trong suốt, rõ nét. Website cũng nhận JPG và WebP; nếu file chưa đạt, xưởng sẽ liên hệ để xử lý.</p></details><details><summary>Bao lâu nhận được hàng?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Thời gian tùy loại sản phẩm và số lượng. Sau khi chốt mẫu, xưởng sẽ xác nhận ngày hoàn thành cụ thể.</p></details><details><summary>Ngoài Cần Thơ có đặt được không?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Có. Bạn có thể lấy tại xưởng, giao trong Cần Thơ hoặc gửi xe đi tỉnh.</p></details></div>
+      <div class="acc"><details open><summary>Ít nhất in bao nhiêu ly?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Xưởng nhận từ 500 ly. In càng nhiều, giá mỗi ly càng rẻ.</p></details><details><summary>Giá in ly bao nhiêu?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Giá tùy loại ly và số lượng. Gửi đơn trên web hoặc nhắn Zalo, xưởng báo giá trong 30 phút.</p></details><details><summary>Chưa có logo thì làm sao?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Xưởng vẽ giúp bạn (có tính phí vẽ). Hoặc mở Thư viện câu lệnh, tự làm logo bằng AI miễn phí.</p></details><details><summary>Có được xem mẫu trước khi in không?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Có. Xưởng gửi hình ly có logo của bạn để xem trước. Ưng rồi mới in, chưa ưng thì sửa tới khi ưng.</p></details><details><summary>Xưởng in được loại ly nào?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Ly nhựa dẻo PP, ly nhựa cứng PET, ly giấy và tô giấy. Cỡ từ ly nhỏ tới ly 1,5 lít.</p></details><details><summary>Logo gửi file gì cũng được?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Được. Hình chụp, file PNG hay JPG đều nhận. Hình mờ quá thì xưởng sẽ nhắn bạn gửi lại.</p></details><details><summary>Bao lâu thì có ly?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Tùy số lượng và loại ly. Khi bạn chốt mẫu, xưởng báo ngày giao rõ ràng.</p></details><details><summary>Ở xa Cần Thơ có đặt được không?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Được. Bạn có thể lấy ở xưởng, xưởng giao trong Cần Thơ, hoặc gửi xe đi tỉnh.</p></details></div>
     </div>
   </section>
 
@@ -140,21 +139,21 @@
   <div class="wrap">
     <div class="page-head pr-head">
       <div>
-        <h1>Chọn một phong cách.<br>Để AI bắt đầu cùng bạn.</h1>
+        <h1>Chọn mẫu, để AI vẽ logo cho bạn</h1>
       </div>
     </div>
     <ol class="pr-steps">
-      <li class="card card--pad"><span class="num-badge">1</span><div><b class="card-title">Chọn kiểu hợp quán</b><p class="card-desc">Xem 12 hướng logo và chọn kiểu gần với cá tính quán nhất.</p></div></li>
-      <li class="card card--pad"><span class="num-badge">2</span><div><b class="card-title">Copy câu lệnh</b><p class="card-desc">Một lần bấm là có sẵn yêu cầu về logo, nền trong và bản đơn sắc.</p></div></li>
-      <li class="card card--pad"><span class="num-badge">3</span><div><b class="card-title">Dán vào AI, rồi chỉnh</b><p class="card-desc">Mô tả quán và yêu cầu AI sửa từng chi tiết tới khi đúng ý.</p></div></li>
+      <li class="card card--pad"><span class="num-badge">1</span><div><b class="card-title">Chọn phong cách</b><p class="card-desc">Tìm hoặc lướt xem, ưng kiểu logo nào thì chọn kiểu đó.</p></div></li>
+      <li class="card card--pad"><span class="num-badge">2</span><div><b class="card-title">Copy câu lệnh</b><p class="card-desc">Bấm một lần để chép toàn bộ câu lệnh.</p></div></li>
+      <li class="card card--pad"><span class="num-badge">3</span><div><b class="card-title">Dán vào AI và chỉnh</b><p class="card-desc">Trả lời vài câu hỏi, rồi yêu cầu AI sửa tiếp tới khi đúng ý.</p></div></li>
     </ol>
     <div class="pr-bar">
       <div class="search"><svg class="search-ic" aria-hidden="true"><use href="#i-search"/></svg><input class="inp" id="prQ" type="search" placeholder="Gõ phong cách bạn tìm" aria-label="Tìm phong cách logo" autocomplete="off"></div>
     </div>
     <div class="prompts" id="prompts"></div>
     <div class="card card--pad pr-note">
-      <div><b class="card-title">Có logo rồi, bước tiếp theo rất đơn giản</b><p class="card-desc">Tải bản PNG nền trong suốt từ AI, chọn sản phẩm và đính kèm logo vào phiếu đặt in.</p></div>
-      <a class="btn btn-sec" href="#dat-hang">Dùng logo để đặt in</a>
+      <div><b class="card-title">Logo tạo xong dùng thế nào?</b><p class="card-desc">Tải file PNG nền trong suốt và gửi cùng phiếu đặt in. Câu lệnh đã yêu cầu thêm bản đơn sắc để in rõ trên ly.</p></div>
+      <a class="btn btn-sec" href="#dat-hang">Đặt in với logo này</a>
     </div>
   </div>
 </main>
@@ -223,7 +222,7 @@
       <h2>10. Thay đổi chính sách</h2>
       <p>Khi chính sách thay đổi, Xưởng cập nhật trên trang này kèm ngày áp dụng mới.</p>
 
-      <div class="btns" style="margin-top:28px"><button class="btn btn-pri" data-go="dat-hang">Tạo phiếu đặt in</button><button class="btn btn-text" data-go="trang-chu">Về trang chủ</button></div>
+      <div class="btns" style="margin-top:28px"><button class="btn btn-pri" data-go="dat-hang">Đặt in nhanh</button><button class="btn btn-text" data-go="trang-chu">Về trang chủ</button></div>
     </article>
   </div>
 </main>
@@ -231,17 +230,17 @@
 <!-- ============ ĐẶT HÀNG ============ -->
 <main id="v-dat-hang" class="page" hidden>
   <div class="wrap">
-    <div class="page-head order-page-head"><div><h1>Tạo phiếu đặt in</h1><p>Chọn sản phẩm trước. Xưởng kiểm tra và báo đúng giá qua Zalo.</p></div><div class="catalog-tools"><label class="catalog-search search"><svg class="search-ic" aria-hidden="true"><use href="#i-search"/></svg><input class="inp" id="productSearch" type="search" aria-label="Tìm sản phẩm" placeholder="Tìm theo tên, dung tích hoặc mã sản phẩm…"></label></div></div>
+    <div class="page-head order-page-head"><div><h1>Đặt in nhanh</h1><p>3 bước, chưa tới 3 phút. Báo giá qua Zalo.</p></div><div class="catalog-tools"><label class="catalog-search search"><svg class="search-ic" aria-hidden="true"><use href="#i-search"/></svg><input class="inp" id="productSearch" type="search" aria-label="Tìm sản phẩm" placeholder="Tìm tên, dung tích hoặc mã SKU…"></label></div></div>
     <ol class="pr-steps order-guide" aria-label="Quy trình đặt in">
-      <li class="card card--pad"><span class="num-badge">1</span><div><b class="card-title">Chọn hàng</b><p class="card-desc">Chọn mẫu, nhập số lượng và thêm vào phiếu.</p></div></li>
-      <li class="card card--pad"><span class="num-badge">2</span><div><b class="card-title">Thêm logo</b><p class="card-desc">Tải file có sẵn hoặc nhờ xưởng thiết kế.</p></div></li>
-      <li class="card card--pad"><span class="num-badge">3</span><div><b class="card-title">Nhận báo giá</b><p class="card-desc">Để lại Zalo, xưởng liên hệ xác nhận.</p></div></li>
+      <li class="card card--pad"><span class="num-badge">1</span><div><b class="card-title">Chọn sản phẩm</b><p class="card-desc">Chọn mẫu, số lượng rồi thêm vào phiếu.</p></div></li>
+      <li class="card card--pad"><span class="num-badge">2</span><div><b class="card-title">Gửi logo</b><p class="card-desc">Tải logo lên hoặc nhờ xưởng hỗ trợ.</p></div></li>
+      <li class="card card--pad"><span class="num-badge">3</span><div><b class="card-title">Gửi yêu cầu</b><p class="card-desc">Điền liên hệ, xưởng báo giá qua Zalo.</p></div></li>
     </ol>
     <form class="order" id="orderForm" novalidate>
       <div class="o-steps">
 
         <section class="card o-step" id="oStep1">
-          <div class="o-head"><div><h2 class="t-h4">Chọn sản phẩm cần đặt</h2><p class="hint" id="catalogSummary">Danh mục thật tại xưởng: ly, tô, nắp, hộp, ống hút, muỗng và bọc.</p></div></div>
+          <div class="o-head"><div><h2 class="t-h4">Sản phẩm</h2><p class="hint" id="catalogSummary">Sản phẩm thật: ly, tô, nắp, hộp, ống hút, muỗng và bọc.</p></div></div>
           <div class="filter-group"><span class="filter-label">Danh mục sản phẩm</span><div class="product-tabs" id="productTabs" role="tablist" aria-label="Danh mục sản phẩm"></div></div>
           <div class="filter-group" id="typeGroup"><span class="filter-label" id="typeLabel">Phân loại</span><div class="o-types" id="typeGrid"></div></div>
           <div class="field product-qty"><span class="label">Số lượng</span>
@@ -251,33 +250,33 @@
           <div class="product-grid" id="productGrid"></div>
           <button type="button" class="catalog-more" id="catalogMore">Xem thêm sản phẩm</button>
           <div class="add-to-order"><div><b id="activeProductName">Mẫu đang chọn</b><span class="num" id="activeProductQty">1.000 ly</span></div><button type="button" class="btn btn-pri o-add" id="addLine"><svg class="ico"><use href="#i-plus"/></svg>Thêm vào phiếu</button></div>
-          <div class="order-lines"><div class="order-lines-head"><div><span class="filter-label">Phiếu đang tạo</span><b id="lineCount">Chưa có sản phẩm</b></div><span class="order-lines-hint">Có thể thêm nhiều loại</span></div><div class="o-lines" id="lines"></div><div class="order-lines-empty" id="linesEmpty">Chọn một mẫu bên trên để bắt đầu phiếu.</div></div>
+          <div class="order-lines"><div class="order-lines-head"><div><span class="filter-label">Sản phẩm trong phiếu</span><b id="lineCount">Chưa có sản phẩm</b></div><span class="order-lines-hint">Chọn nhiều sản phẩm</span></div><div class="o-lines" id="lines"></div><div class="order-lines-empty" id="linesEmpty">Chọn mẫu rồi thêm vào phiếu.</div></div>
         </section>
 
         <section class="card o-step" id="oStep2">
-          <div class="o-head"><div><h2 class="t-h4">Logo cần in</h2><p class="hint">Chọn cách phù hợp với tình trạng hiện tại của quán.</p></div></div>
+          <div class="o-head"><div><h2 class="t-h4">Logo in lên ly</h2><p class="hint">Bạn đã có logo chưa?</p></div></div>
           <div class="kinds">
-            <button type="button" class="kind-c" id="kindA" aria-pressed="true"><span class="ib"><svg class="ico"><use href="#i-image"/></svg></span><span><b>Tôi đã có logo</b><span>Đính kèm file để xưởng kiểm tra</span></span></button>
-            <button type="button" class="kind-c" id="kindB" aria-pressed="false"><span class="ib"><svg class="ico"><use href="#i-pen"/></svg></span><span><b>Tôi cần làm logo</b><span>Mô tả ý tưởng để xưởng báo phí</span></span></button>
+            <button type="button" class="kind-c" id="kindA" aria-pressed="true"><span class="ib"><svg class="ico"><use href="#i-image"/></svg></span><span><b>Đã có logo</b><span>Tải hình logo lên</span></span></button>
+            <button type="button" class="kind-c" id="kindB" aria-pressed="false"><span class="ib"><svg class="ico"><use href="#i-pen"/></svg></span><span><b>Chưa có logo</b><span>Xưởng vẽ giúp, có phụ phí</span></span></button>
           </div>
           <div id="paneA" class="o-pane">
-            <label class="drop" id="dropA" for="fileA"><span class="ib"><svg class="ico"><use href="#i-upload"/></svg></span><b>Chọn file logo</b><span class="hint">Ưu tiên PNG nền trong · nhận JPG, WebP · tối đa 5 MB/ảnh</span></label>
+            <label class="drop" id="dropA" for="fileA"><span class="ib"><svg class="ico"><use href="#i-upload"/></svg></span><b>Bấm để <u>chọn hình logo</u></b><span class="hint">PNG, JPG hoặc WebP · tối đa 5 MB/ảnh</span></label>
             <input type="file" id="fileA" accept="image/png,image/jpeg,image/webp" multiple hidden>
             <div class="files" id="filesA"></div>
           </div>
           <div id="paneB" class="o-pane" hidden>
-            <div class="note warn" id="feeNote"><svg class="ico"><use href="#i-info"/></svg><span><b>Thiết kế logo có phí riêng.</b> Xưởng báo phí trước; chỉ bắt đầu khi bạn đồng ý.</span></div>
+            <div class="note warn" id="feeNote"><svg class="ico"><use href="#i-info"/></svg><span><b>Phụ phí vẽ logo:</b> vẽ logo có tính phí riêng. Xưởng báo phí vẽ cùng giá in qua Zalo, bạn đồng ý thì xưởng mới bắt đầu vẽ.</span></div>
             <div class="field"><label class="label" for="bShop">Tên quán in lên ly</label><input class="inp" id="bShop" placeholder="vd Trà Sữa Mây"></div>
-            <div class="field"><label class="label" for="bWish">Phong cách bạn hình dung <span class="opt">(không bắt buộc)</span></label><textarea class="inp" id="bWish" placeholder="Ví dụ: tối giản, gần gũi, có biểu tượng ly trà sữa"></textarea></div>
-            <label class="drop drop-sm" for="fileB"><span class="ib"><svg class="ico"><use href="#i-image"/></svg></span><b>Thêm ảnh bạn thích</b><span class="hint">Không bắt buộc · tối đa 3 ảnh</span></label>
+            <div class="field"><label class="label" for="bWish">Bạn muốn logo thế nào? <span class="opt">(không bắt buộc)</span></label><textarea class="inp" id="bWish" placeholder="vd dễ thương, màu nâu kem, có hình ly trà sữa"></textarea></div>
+            <label class="drop drop-sm" for="fileB"><span class="ib"><svg class="ico"><use href="#i-image"/></svg></span><b>Ảnh mẫu bạn thích · <u>chọn ảnh</u></b><span class="hint">Không bắt buộc, tối đa 3 ảnh</span></label>
             <input type="file" id="fileB" accept="image/png,image/jpeg,image/webp" multiple hidden>
             <div class="files" id="filesB"></div>
           </div>
-          <div class="field"><span class="label">Số mặt in</span><div class="seg" role="group"><button type="button" data-sides="1" aria-pressed="true">1 mặt</button><button type="button" data-sides="2" aria-pressed="false">2 mặt</button></div></div>
+          <div class="field"><span class="label">In mấy mặt</span><div class="seg" role="group"><button type="button" data-sides="1" aria-pressed="true">1 mặt</button><button type="button" data-sides="2" aria-pressed="false">2 mặt</button></div></div>
         </section>
 
         <section class="card o-step" id="oStep3">
-          <div class="o-head"><div><h2 class="t-h4">Thông tin nhận báo giá</h2><p class="hint">Xưởng dùng thông tin này để xác nhận mẫu, giá và cách nhận hàng.</p></div></div>
+          <div class="o-head"><div><h2 class="t-h4">Thông tin liên hệ</h2><p class="hint">Xưởng nhắn Zalo theo số này để báo giá.</p></div></div>
           <div class="grid2">
             <div class="field"><label class="label" for="cName">Tên bạn</label><input class="inp" id="cName" autocomplete="name" placeholder="vd Chị Hạnh"></div>
             <div class="field"><label class="label" for="cPhone">Số Zalo</label><input class="inp num" id="cPhone" inputmode="tel" autocomplete="tel" placeholder="vd 0901 234 567"></div>
@@ -287,13 +286,13 @@
           <div class="field"><label class="label" for="cNote">Ghi chú <span class="opt">(không bắt buộc)</span></label><textarea class="inp" id="cNote" placeholder="vd cần trước ngày 20, thêm nắp cầu"></textarea></div>
           <label class="check"><input type="checkbox" id="cConsent"><span>Tôi đồng ý cho xưởng dùng thông tin này để báo giá và làm đơn, theo <button type="button" class="linkish" data-go="chinh-sach-bao-mat">Chính sách bảo mật</button>. Logo gửi là của quán tôi.</span></label>
           <div class="err-list" id="errs"></div>
-          <button type="button" class="btn btn-pri btn-lg btn-block" id="nextBtn">Gửi phiếu cho xưởng</button>
+          <button type="button" class="btn btn-pri btn-lg btn-block" id="nextBtn">Gửi yêu cầu</button>
         </section>
       </div>
 
       <aside class="side">
         <div class="o-bill">
-          <div class="bill-head"><svg class="bill-logo" role="img" aria-label="Magasin Cup"><use href="#i-magasin"/></svg><h3>Phiếu đặt in</h3></div>
+          <div class="bill-head"><svg class="bill-logo" role="img" aria-label="Magasin Cup"><use href="#i-magasin"/></svg><h3>Đơn của bạn</h3></div>
           <div class="sum" id="sum"></div>
         </div>
       </aside>
@@ -308,11 +307,11 @@
 
 <footer class="fx" id="gfoot"><div class="wrap">
   <div class="fx-cta">
-    <div><h2 class="t-h1">Đưa tên quán<br>lên chiếc ly đầu tiên</h2><p class="t-lead">Tạo phiếu trong vài phút. Xưởng kiểm tra và báo giá trực tiếp qua Zalo.</p></div>
-    <div class="btns"><button class="btn btn-pri btn-lg" data-go="dat-hang">Tạo phiếu đặt in</button></div>
+    <div><h2 class="t-h1">Sẵn sàng có ly<br>mang tên quán?</h2><p class="t-lead">Gửi logo hôm nay. Xưởng nhắn Zalo báo giá trong 30 phút.</p></div>
+    <div class="btns"><button class="btn btn-pri btn-lg" data-go="dat-hang">Đặt in nhanh</button></div>
   </div>
   <div class="fx-cols">
-    <div class="fx-brand"><p>MAGASIN Cup nhận in logo trên ly nhựa, ly giấy và tô giấy cho quán nước tại Cần Thơ và các tỉnh miền Tây.</p>
+    <div class="fx-brand"><p>Xưởng In Ly Magasin Cup. In tên quán lên ly nhựa, ly giấy cho quán nước ở Cần Thơ và các tỉnh miền Tây.</p>
       <div class="fx-soc"><a class="btn btn-light btn-sm btn-icon" href="https://www.facebook.com/magasincup" target="_blank" rel="noopener" aria-label="Fanpage"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v7h4v-7h3l.5-4h-3.5V9c0-.6.4-1 1-1z" fill="currentColor"/></svg></a><a class="btn btn-light btn-sm btn-icon" id="gfTT" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M14 3v11.5a3.5 3.5 0 1 1-3-3.46V8.5a6.5 6.5 0 1 0 6 6.48V9.2c1.1.8 2.4 1.3 3.8 1.3V7.4A4.6 4.6 0 0 1 16.2 3H14z" fill="currentColor"/></svg></a><a class="btn btn-light btn-sm btn-icon" id="gfMS" target="_blank" rel="noopener" aria-label="Messenger"><svg viewBox="0 0 24 24"><path d="M12 2.5C6.5 2.5 2.5 6.4 2.5 11.3c0 2.7 1.3 5 3.3 6.6V21l3-1.7c1 .3 2.1.4 3.2.4 5.5 0 9.5-3.9 9.5-8.8S17.5 2.5 12 2.5z" fill="currentColor"/></svg></a></div></div>
     <div><h4 class="t-label">Liên hệ</h4><ul class="fx-list">
       <li><a href="https://zalo.me/0386135350" target="_blank" rel="noopener"><span>Zalo</span><b class="num">0386 135 350</b></a></li>
@@ -557,10 +556,10 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-kind]');if
  setTimeout(()=>{if(k==='B')window.scrollTo({top:$('oStep2').getBoundingClientRect().top+scrollY-100,behavior:'smooth'});else window.scrollTo({top:0})},80)});
 
 const KET=[
- {r:'Đã có logo',t:'Chọn ly, gửi file,<br>nhận đúng báo giá',img:'assets/ket-co-logo-v2.jpg',alt:'Chủ quán dùng điện thoại và cầm ly mẫu đã in biểu tượng',cta:'Tạo phiếu đặt in',act:'data-kind="A"'},
- {r:'Chưa có logo',t:'Mô tả ý tưởng,<br>xưởng báo phí thiết kế',img:'assets/ket-ve-logo-v2.jpg',alt:'Nhân viên thiết kế phác thảo biểu tượng ly trên bảng vẽ',cta:'Nhờ xưởng thiết kế',act:'data-kind="B"'},
- {r:'Muốn tự làm',t:'Chọn câu lệnh,<br>tạo logo cùng AI',img:'assets/ket-tu-lam-v2.jpg',alt:'Chủ quán xem các phương án biểu tượng logo trên máy tính',cta:'Mở thư viện logo AI',act:'data-go="thu-vien-prompt"',soft:true},
- {r:'Chưa biết chọn gì',t:'Nói nhu cầu,<br>xưởng tư vấn đúng loại',img:'assets/ket-tu-van-v2.jpg',alt:'Nhân viên xưởng tư vấn hai mẫu ly cho chủ quán',cta:'Nhắn xưởng tư vấn',href:'https://zalo.me/0386135350'}];
+ {r:'Đã có logo',t:'Gửi logo là in,<br>nhanh và gọn',img:'assets/ket-co-logo.jpg',alt:'Chủ quán tải logo lên máy tính, bên cạnh là ly giấy đã in logo',cta:'Đặt in nhanh',act:'data-kind="A"'},
+ {r:'Chưa có logo',t:'Chuyên viên vẽ giúp,<br>đẹp và giá tốt',img:'assets/ket-ve-logo.jpg',alt:'Nhân viên xưởng vẽ logo linh vật ly nước trên bảng vẽ',cta:'Đặt in nhanh',act:'data-kind="B"'},
+ {r:'Muốn tự làm',t:'Thư viện câu lệnh,<br>tự sáng tạo dễ dàng',img:'assets/ket-tu-lam.jpg',alt:'Chủ quán chọn mẫu logo do AI tạo trên điện thoại',cta:'Xem thư viện câu lệnh',act:'data-go="thu-vien-prompt"',soft:true},
+ {r:'Còn phân vân',t:'Nhắn Zalo, nhân viên<br>tư vấn tận tình',img:'assets/ket-tu-van.jpg',alt:'Nhân viên xưởng nghe điện thoại tư vấn, tay cầm ly đã in',cta:'Nhắn Zalo cho xưởng',href:'https://zalo.me/0386135350'}];
 $('ketGrid').innerHTML=KET.map(k=>`<div class="card card--media ket-card"><div class="card-tx"><span class="card-eyebrow">${k.r}</span><b class="card-title">${k.t}</b></div>
  ${k.img?`<div class="media"><img src="${k.img}" alt="${esc(k.alt)}" loading="lazy"></div>`:`<div class="media slot">${slotIn('Ảnh: '+k.r)}</div>`}
  ${k.href?`<a class="btn btn-sec btn-block" href="${k.href}" target="_blank" rel="noopener">${k.cta}</a>`:`<button class="btn ${k.soft?'btn-sec':'btn-pri'} btn-block" ${k.act}>${k.cta}</button>`}</div>`).join('');
@@ -705,7 +704,7 @@ $('deliv').addEventListener('click',e=>{const b=e.target.closest('[data-deliv]')
 /* ---------- Tóm tắt ---------- */
 function renderSummary(){
  const L=allLines(),tot=L.reduce((a,l)=>a+l.qty,0),hasPrint=L.some(l=>['cups','bowls'].includes(l.tab));
- if(!L.length){$('sum').innerHTML='<div class="bill-empty">Sản phẩm bạn chọn sẽ hiện ở đây</div>';return}
+ if(!L.length){$('sum').innerHTML='<div class="bill-empty">Chưa có sản phẩm</div>';return}
  $('sum').innerHTML=`
   <div class="bill-items">${L.map((l,i)=>`<div class="bill-item"><span class="bill-index">${i+1}</span><span class="bill-product"><b>${esc(lineText(l))}</b><small>${esc(l.sku||'Chưa có mã')}</small></span><strong class="num">${fmt(l.qty)}<small>${esc(l.unit||'cái')}</small></strong></div>`).join('')}</div>
   <div class="bill-details">
@@ -713,7 +712,7 @@ function renderSummary(){
    <div class="bill-row"><span>Nhận hàng</span><strong>${esc(state.deliv)}</strong></div>
   </div>
   <div class="bill-total"><span>Tổng số lượng</span><strong class="num">${fmt(tot)}<small>đơn vị</small></strong></div>
-  <div class="bill-price"><span>Giá chính xác</span><strong>Xưởng báo qua Zalo</strong></div>`;
+  <div class="bill-price"><span>Giá đơn hàng</span><strong>Báo qua Zalo</strong></div>`;
 }
 
 /* ---------- Kiểm tra ---------- */
@@ -799,7 +798,7 @@ async function submit(){
   else{await saveOrderToSheet(o);saved=true}
   if(files.length)await promoteOrderLogos(o);
  }catch(err){saved=false;upNote=err?.message||'Chưa tải được logo.'}
- lastOrder={o,saved,upNote,sourceFiles:files};renderDone();submitting=false;nb.disabled=false;nb.innerHTML='Gửi phiếu cho xưởng';go('da-gui');
+ lastOrder={o,saved,upNote,sourceFiles:files};renderDone();submitting=false;nb.disabled=false;nb.innerHTML='Gửi yêu cầu';go('da-gui');
 }
 async function retryLastOrder(){
  if(!lastOrder||lastOrder.saved||submitting)return;
@@ -812,15 +811,15 @@ function renderDone(){
  const {o,saved,upNote}=lastOrder,txt=orderText(o);
  $('done').innerHTML=`
   <div class="ok" style="${saved?'':'background:var(--amber-soft);color:var(--amber)'}">${icon(saved?'check':'info')}</div>
-  <h1>${saved?'Xưởng đã nhận phiếu':'Phiếu chưa gửi được'}</h1>
+  <h1>${saved?'Đã gửi yêu cầu':'Chưa gửi được lên hệ thống'}</h1>
   <p>Mã đơn <span class="code num">${o.code}</span></p>
-  ${saved?`<p style="color:var(--ink-2)">Phiếu đã vào hàng chờ. Xưởng sẽ nhắn Zalo số <b class="num">${esc(o.contact.phone)}</b> để xác nhận và báo giá${o.kind==='B'?' kèm phí thiết kế':''}.</p>`
-   :`<div class="note warn">${icon('info')}<span>Nội dung phiếu vẫn được giữ nguyên. Bạn có thể thử lại hoặc gửi trực tiếp qua Zalo.</span></div>`}
+  ${saved?`<p style="color:var(--ink-2)">Đơn đã vào hàng chờ của xưởng. Xưởng sẽ nhắn Zalo số <b class="num">${esc(o.contact.phone)}</b> để báo giá${o.kind==='B'?' và phí thiết kế':''}.</p>`
+   :`<div class="note warn">${icon('info')}<span>Đơn chưa gửi được. Nội dung vẫn được giữ nguyên; bạn có thể thử lại hoặc gửi qua Zalo.</span></div>`}
   ${upNote?`<div class="note warn">${icon('info')}<span>${esc(upNote)}</span></div>`:''}
   <pre>${esc(txt)}</pre>
-  <div class="btns">${saved?'':`<button class="btn btn-pri" id="retryOrder">Gửi lại phiếu</button>`}<button class="btn ${saved?'btn-pri':'btn-sec'}" id="copyOrder">${icon('copy')}Chép nội dung phiếu</button><a class="btn btn-sec" href="https://zalo.me/0386135350" target="_blank" rel="noopener">Nhắn Zalo cho xưởng</a><button class="btn btn-text" id="newOrder">Tạo phiếu mới</button></div>
+  <div class="btns">${saved?'':`<button class="btn btn-pri" id="retryOrder">Thử gửi lại</button>`}<button class="btn ${saved?'btn-pri':'btn-sec'}" id="copyOrder">${icon('copy')}Chép nội dung đơn</button><a class="btn btn-sec" href="https://zalo.me/0386135350" target="_blank" rel="noopener">Nhắn Zalo cho xưởng</a><button class="btn btn-text" id="newOrder">Đặt đơn khác</button></div>
   <p class="hint">Zalo xưởng: <span class="num">0386 135 350</span> hoặc <span class="num">058 9438 067</span></p>`;
- $('copyOrder').onclick=()=>copyText(txt,'Đã chép nội dung phiếu');
+ $('copyOrder').onclick=()=>copyText(txt,'Đã chép nội dung đơn');
  if($('retryOrder'))$('retryOrder').onclick=retryLastOrder;
  $('newOrder').onclick=()=>{state.lines=[];state.filesA=[];state.filesB=[];$('orderForm').reset();setKind('A');renderFiles();renderBuilder();go('dat-hang')};
 }
