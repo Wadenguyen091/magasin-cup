@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261118-20">
+<link rel="stylesheet" href="styles.css?v=20261118-21">
 </head>
 <body>
 
@@ -45,7 +45,7 @@
       <svg class="wm" aria-hidden="true"><use href="#i-magasin"/></svg>
     </button>
     <div class="top-r">
-      <button class="top-link" data-go="thu-vien-prompt"><span class="top-link-full">Tạo logo AI</span><span class="top-link-short">Logo AI</span><small>Miễn phí</small></button>
+      <button class="top-link" data-go="thu-vien-prompt" data-nav="thu-vien-prompt"><span class="top-link-full">Tạo logo AI</span><span class="top-link-short">Logo AI</span></button>
       <button class="btn btn-light" data-go="dat-hang">Đặt in nhanh</button>
     </div>
   </div>
@@ -139,9 +139,7 @@
   <div class="wrap">
     <div class="page-head pr-head">
       <div>
-        <span class="eyebrow">TỰ LÀM LOGO MIỄN PHÍ</span>
         <h1>Chọn mẫu, để AI vẽ logo cho bạn</h1>
-        <p>Copy câu lệnh rồi dán vào ChatGPT, Gemini hoặc Copilot. AI sẽ hỏi về quán và cùng bạn chỉnh tới khi ưng.</p>
       </div>
     </div>
     <ol class="pr-steps">
@@ -233,6 +231,11 @@
 <main id="v-dat-hang" class="page" hidden>
   <div class="wrap">
     <div class="page-head order-page-head"><div><h1>Đặt in nhanh</h1><p>3 bước, chưa tới 3 phút. Báo giá qua Zalo.</p></div><div class="catalog-tools"><label class="catalog-search search"><svg class="search-ic" aria-hidden="true"><use href="#i-search"/></svg><input class="inp" id="productSearch" type="search" aria-label="Tìm sản phẩm" placeholder="Tìm tên, dung tích hoặc mã SKU…"></label></div></div>
+    <ol class="pr-steps order-guide" aria-label="Quy trình đặt in">
+      <li class="card card--pad"><span class="num-badge">1</span><div><b class="card-title">Chọn sản phẩm</b><p class="card-desc">Chọn mẫu, số lượng rồi thêm vào phiếu.</p></div></li>
+      <li class="card card--pad"><span class="num-badge">2</span><div><b class="card-title">Gửi logo</b><p class="card-desc">Tải logo lên hoặc nhờ xưởng hỗ trợ.</p></div></li>
+      <li class="card card--pad"><span class="num-badge">3</span><div><b class="card-title">Gửi yêu cầu</b><p class="card-desc">Điền liên hệ, xưởng báo giá qua Zalo.</p></div></li>
+    </ol>
     <form class="order" id="orderForm" novalidate>
       <div class="o-steps">
 
@@ -589,6 +592,7 @@ function show(v){
  if(!VIEWS.includes(v)) v='trang-chu';
  if(v==='da-gui'&&!lastOrder) v='dat-hang';
  VIEWS.forEach(x=>$('v-'+x).hidden=x!==v);
+ document.querySelectorAll('[data-nav]').forEach(x=>x.toggleAttribute('aria-current',x.dataset.nav===v));
  if(v==='trang-chu')$('footSlot').appendChild($('gfoot'));else document.body.insertBefore($('gfoot'),$('toast'));
  window.scrollTo(0,0);
 }
