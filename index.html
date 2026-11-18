@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261118-15">
+<link rel="stylesheet" href="styles.css?v=20261118-16">
 </head>
 <body>
 
@@ -317,7 +317,7 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/products.js?v=20261118-15"></script>
+<script src="assets/products.js?v=20261118-16"></script>
 <script>
 (()=>{
 const TYPES=[
@@ -723,6 +723,11 @@ function orderText(o){
  t+=`\nNhận hàng: ${o.contact.deliv}${o.contact.province?' ('+o.contact.province+')':''}${o.contact.needBy?'\nCần trước: '+o.contact.needBy.split('-').reverse().join('/'):''}${o.contact.note?'\nGhi chú: '+o.contact.note:''}`;
  return t;
 }
+const SHEET_ORDER_ENDPOINT='https://script.google.com/macros/s/AKfycbwekw6QxegElRbCTE2davW4Q2-Z43KxTAKPeltc_h-Tz4ohYaLTw2GWjsghrPrkfKjhNA/exec';
+async function saveOrderToSheet(order){
+ const body=new URLSearchParams({payload:JSON.stringify(order)});
+ await fetch(SHEET_ORDER_ENDPOINT,{method:'POST',mode:'no-cors',body,keepalive:true});
+}
 let lastOrder=null,submitting=false;
 async function submit(){
  if(submitting)return;submitting=true;const nb=$('nextBtn');nb.disabled=true;nb.textContent='Đang gửi…';
@@ -741,7 +746,9 @@ async function submit(){
   const assets=await capP('assets');
   if(assets){for(let i=0;i<files.length;i++){try{const r=await assets.upload(files[i].file);o.files[i].id=r.id;o.files[i].url=r.url}catch(err){upNote='Một số file chưa tải lên được, gửi lại qua Zalo giúp xưởng.'}}}
   else if(files.length)upNote='File chưa tải lên hệ thống, gửi file qua Zalo giúp xưởng.';
-  const db=await capP('db');if(db){await db.collection('orders').doc(o.code).set(o);saved=true}
+  const db=await capP('db');
+  if(db){await db.collection('orders').doc(o.code).set(o);saved=true}
+  else{await saveOrderToSheet(o);saved=true}
  }catch(err){saved=false}
  lastOrder={o,saved,upNote};renderDone();submitting=false;nb.disabled=false;nb.innerHTML='Gửi yêu cầu';go('da-gui');
 }
