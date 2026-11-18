@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261118-18">
+<link rel="stylesheet" href="styles.css?v=20261118-20">
 </head>
 <body>
 
@@ -45,6 +45,7 @@
       <svg class="wm" aria-hidden="true"><use href="#i-magasin"/></svg>
     </button>
     <div class="top-r">
+      <button class="top-link" data-go="thu-vien-prompt"><span class="top-link-full">Tạo logo AI</span><span class="top-link-short">Logo AI</span><small>Miễn phí</small></button>
       <button class="btn btn-light" data-go="dat-hang">Đặt in nhanh</button>
     </div>
   </div>
@@ -846,8 +847,7 @@ function renderPrompts(){
  const q=norm($('prQ').value.trim());
  const html=PROMPTS.map((p,i)=>q&&!norm(p.name+' '+p.desc+' '+p.kw).includes(q)?'':`<div class="card card--media pr">${p.img?`<div class="media" data-img="${esc(p.img)}" data-w="600" data-alt="Mẫu logo phong cách ${esc(p.name)}"></div>`:`<div class="media slot">${slotIn('Ảnh mẫu')}</div>`}
   <div class="card-tx"><b class="card-title">${esc(p.name)}</b><span class="card-desc">${esc(p.desc)}</span></div>
-  <button class="btn btn-pri btn-sm btn-block" data-prcopy="${i}">${icon('copy')}Copy câu lệnh</button>
-  <details class="pr-more"><summary>Xem toàn bộ câu lệnh</summary><pre>${esc(fillPrompt(p))}</pre></details></div>`).join('');
+  <button class="btn btn-pri btn-sm btn-block" data-prcopy="${i}">${icon('copy')}Copy câu lệnh</button></div>`).join('');
  $('prompts').innerHTML=html||`<p class="pr-empty">Chưa có phong cách "${esc($('prQ').value.trim())}". Thử gõ chữ khác, vd chibi, thư pháp.</p>`;
  loadImgs($('prompts'));
 }
