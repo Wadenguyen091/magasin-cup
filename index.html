@@ -246,8 +246,8 @@
             <button type="button" class="kind-c" id="kindB" aria-pressed="false"><span class="ib"><svg class="ico"><use href="#i-pen"/></svg></span><span><b>Chưa có logo</b><span>Xưởng vẽ giúp, có phụ phí</span></span></button>
           </div>
           <div id="paneA" class="o-pane">
-            <label class="drop" id="dropA" for="fileA"><span class="ib"><svg class="ico"><use href="#i-upload"/></svg></span><b>Bấm để <u>chọn hình logo</u></b><span class="hint">Hình chụp, PNG, JPG đều được</span></label>
-            <input type="file" id="fileA" accept="image/*,.pdf,.svg,.ai,.psd,.eps" multiple hidden>
+            <label class="drop" id="dropA" for="fileA"><span class="ib"><svg class="ico"><use href="#i-upload"/></svg></span><b>Bấm để <u>chọn hình logo</u></b><span class="hint">PNG, JPG hoặc WebP · tối đa 5 MB/ảnh</span></label>
+            <input type="file" id="fileA" accept="image/png,image/jpeg,image/webp" multiple hidden>
             <div class="files" id="filesA"></div>
           </div>
           <div id="paneB" class="o-pane" hidden>
@@ -255,7 +255,7 @@
             <div class="field"><label class="label" for="bShop">Tên quán in lên ly</label><input class="inp" id="bShop" placeholder="vd Trà Sữa Mây"></div>
             <div class="field"><label class="label" for="bWish">Bạn muốn logo thế nào? <span class="opt">(không bắt buộc)</span></label><textarea class="inp" id="bWish" placeholder="vd dễ thương, màu nâu kem, có hình ly trà sữa"></textarea></div>
             <label class="drop drop-sm" for="fileB"><span class="ib"><svg class="ico"><use href="#i-image"/></svg></span><b>Ảnh mẫu bạn thích · <u>chọn ảnh</u></b><span class="hint">Không bắt buộc, tối đa 3 ảnh</span></label>
-            <input type="file" id="fileB" accept="image/*" multiple hidden>
+            <input type="file" id="fileB" accept="image/png,image/jpeg,image/webp" multiple hidden>
             <div class="files" id="filesB"></div>
           </div>
           <div class="field"><span class="label">In mấy mặt</span><div class="seg" role="group"><button type="button" data-sides="1" aria-pressed="true">1 mặt</button><button type="button" data-sides="2" aria-pressed="false">2 mặt</button></div></div>
@@ -664,11 +664,13 @@ function setKind(k){state.kind=k;$('kindA').setAttribute('aria-pressed',k==='A')
 $('kindA').onclick=()=>setKind('A');$('kindB').onclick=()=>setKind('B');
 document.querySelectorAll('[data-sides]').forEach(b=>b.addEventListener('click',()=>{state.sides=+b.dataset.sides;document.querySelectorAll('[data-sides]').forEach(x=>x.setAttribute('aria-pressed',+x.dataset.sides===state.sides));renderSummary()}));
 function readFiles(list,max){return Promise.all([...list].slice(0,Math.max(0,max)).map(f=>new Promise(r=>{
- if(!/^image\//.test(f.type))return r({file:f,name:f.name,url:''});
  const fr=new FileReader();fr.onload=()=>r({file:f,name:f.name,url:fr.result});fr.onerror=()=>r({file:f,name:f.name,url:''});fr.readAsDataURL(f)})))}
 function filesHTML(arr,key){return arr.map((f,i)=>`<div class="file">${f.url?`<img src="${f.url}" alt="">`:`<span class="ext">${esc((f.name.split('.').pop()||'').toUpperCase())}</span>`}<span>${esc(f.name)}</span><button type="button" class="x" data-rm="${key}:${i}" aria-label="Bỏ file">${icon('x')}</button></div>`).join('')}
-async function addFiles(key,list){const max=key==='A'?4:3,cur=key==='A'?state.filesA:state.filesB;const got=await readFiles(list,max-cur.length);cur.push(...got);
- if(list.length>got.length)toast('Tối đa '+max+' file');renderFiles()}
+async function addFiles(key,list){const max=key==='A'?4:3,cur=key==='A'?state.filesA:state.filesB;
+ const chosen=[...list],valid=chosen.filter(f=>['image/png','image/jpeg','image/webp'].includes(f.type)&&f.size>0&&f.size<=5*1024*1024);
+ if(valid.length<chosen.length)toast('Chỉ nhận PNG, JPG hoặc WebP · tối đa 5 MB/ảnh');
+ const got=await readFiles(valid,max-cur.length);cur.push(...got);
+ if(valid.length>got.length)toast('Tối đa '+max+' file');renderFiles()}
 function renderFiles(){$('filesA').innerHTML=filesHTML(state.filesA,'A');$('filesB').innerHTML=filesHTML(state.filesB,'B');renderSummary()}
 $('fileA').addEventListener('change',e=>{addFiles('A',e.target.files);e.target.value=''});
 $('fileB').addEventListener('change',e=>{addFiles('B',e.target.files);e.target.value=''});
@@ -733,6 +735,30 @@ async function saveOrderToSheet(order){
   return data;
  }finally{clearTimeout(timer)}
 }
+async function uploadLogoFiles(order,sourceFiles){
+ const uploaded=Array.isArray(order.files)?order.files:[];
+ for(let i=0;i<sourceFiles.length;i++){
+  if(uploaded[i]?.pendingKey)continue;
+  const file=sourceFiles[i].file;
+  const metaRes=await fetch('/api/logo-upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderCode:order.code,name:file.name,type:file.type,size:file.size})});
+  const meta=await metaRes.json().catch(()=>({ok:false,error:'Phản hồi upload không hợp lệ'}));
+  if(!metaRes.ok||meta.ok!==true)throw new Error(meta.error||'Chưa tạo được đường tải logo');
+  const uploadBody=new FormData();uploadBody.append('cacheControl','31536000');uploadBody.append('',file);
+  const putRes=await fetch(meta.uploadUrl,{method:'PUT',headers:{'x-upsert':'false'},body:uploadBody});
+  if(!putRes.ok)throw new Error('Chưa tải được logo lên kho lưu trữ');
+  uploaded[i]={name:file.name,id:meta.key,key:meta.key,pendingKey:meta.pendingKey,url:meta.viewUrl,type:file.type,size:file.size};
+ }
+ order.files=uploaded;
+ return uploaded;
+}
+async function promoteOrderLogos(order){
+ const files=(order.files||[]).filter(f=>f.pendingKey&&f.key);
+ if(!files.length)return;
+ const res=await fetch('/api/logo-promote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({files:files.map(f=>({pendingKey:f.pendingKey,key:f.key}))})});
+ const data=await res.json().catch(()=>({ok:false,error:'Phản hồi lưu logo không hợp lệ'}));
+ if(!res.ok||data.ok!==true)throw new Error(data.error||'Chưa hoàn tất lưu logo');
+ files.forEach(f=>delete f.pendingKey);
+}
 let lastOrder=null,submitting=false;
 async function submit(){
  if(submitting)return;submitting=true;const nb=$('nextBtn');nb.disabled=true;nb.textContent='Đang gửi…';
@@ -743,24 +769,23 @@ async function submit(){
    thick:l.thick,qty:l.qty,shape:l.shape,fill:l.fill})),
   total:allLines().reduce((a,l)=>a+l.qty,0),logoNote:'',
   brief:state.kind==='B'?{shop:$('bShop').value.trim(),wish:$('bWish').value.trim(),slogan:'',sell:[],style:'',colors:[],phone:'',fanpage:'',addr:'',avoid:''}:null,
-  files:files.map(f=>({name:f.name,id:'',url:''})),
+  files:[],
   consent:{privacy:true,policyVersion:'2026-11-04',at:Date.now()},
   contact:{name:$('cName').value.trim(),phone:normPhone($('cPhone').value),shop:$('cShop').value.trim(),deliv:state.deliv,province:state.deliv==='Gửi xe đi tỉnh'?$('cProvince').value.trim():'',needBy:'',note:$('cNote').value.trim()}};
  let saved=false,upNote='';
  try{
-  const assets=await capP('assets');
-  if(assets){for(let i=0;i<files.length;i++){try{const r=await assets.upload(files[i].file);o.files[i].id=r.id;o.files[i].url=r.url}catch(err){upNote='Một số file chưa tải lên được, gửi lại qua Zalo giúp xưởng.'}}}
-  else if(files.length)upNote='File chưa tải lên hệ thống, gửi file qua Zalo giúp xưởng.';
+  if(files.length)await uploadLogoFiles(o,files);
   const db=await capP('db');
   if(db){await db.collection('orders').doc(o.code).set(o);saved=true}
   else{await saveOrderToSheet(o);saved=true}
- }catch(err){saved=false}
- lastOrder={o,saved,upNote};renderDone();submitting=false;nb.disabled=false;nb.innerHTML='Gửi yêu cầu';go('da-gui');
+  if(files.length)await promoteOrderLogos(o);
+ }catch(err){saved=false;upNote=err?.message||'Chưa tải được logo.'}
+ lastOrder={o,saved,upNote,sourceFiles:files};renderDone();submitting=false;nb.disabled=false;nb.innerHTML='Gửi yêu cầu';go('da-gui');
 }
 async function retryLastOrder(){
  if(!lastOrder||lastOrder.saved||submitting)return;
  submitting=true;const b=$('retryOrder');if(b){b.disabled=true;b.textContent='Đang gửi lại…'}
- try{await saveOrderToSheet(lastOrder.o);lastOrder.saved=true;renderDone()}
+ try{if(lastOrder.sourceFiles?.length)await uploadLogoFiles(lastOrder.o,lastOrder.sourceFiles);await saveOrderToSheet(lastOrder.o);if(lastOrder.sourceFiles?.length)await promoteOrderLogos(lastOrder.o);lastOrder.saved=true;lastOrder.upNote='';renderDone()}
  catch(err){toast('Chưa gửi được. Kiểm tra mạng rồi thử lại.');if(b){b.disabled=false;b.textContent='Thử gửi lại'}}
  finally{submitting=false}
 }
