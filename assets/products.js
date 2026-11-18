@@ -644,17 +644,6 @@ window.MAGASIN_CATALOG = {
       "heightMm": "106"
     },
     {
-      "sourceRow": 66,
-      "name": "Ly nhựa trơn PP 117 - 700ml (T) 1-10.0",
-      "sku": "UKP117-700PP-C-T1",
-      "imageUrl": "https://www.uykiet.com/data/upload/tho700.png",
-      "imageKind": "reference",
-      "sourceUrl": "https://www.uykiet.com/san-pham/ukp117700ppct-319.html",
-      "rimMm": "117",
-      "baseMm": "80",
-      "heightMm": "106"
-    },
-    {
       "sourceRow": 67,
       "name": "Thố PP Ø117 – 700ml – Đú trend -  Bằng Mỏng",
       "sku": "TH710",
@@ -2241,7 +2230,7 @@ window.MAGASIN_CATALOG = {
       "sourceRow": 221,
       "group": "Nắp",
       "name": "Nắp bằng đục lỗ 117mm (1000 cái/thùng) CV",
-      "sku": "N117CV",
+      "sku": null,
       "imageUrl": "https://www.uykiet.com/data/upload/UKP117-PETLIDFLAT-T.png",
       "imageKind": "reference",
       "sourceUrl": "https://www.uykiet.com/san-pham/ukp117-petlid-flat-328.html",
@@ -2370,7 +2359,7 @@ window.MAGASIN_CATALOG = {
     {
       "sourceRow": 237,
       "group": "Muỗng",
-      "name": "Muõng HK - 17cm TRẮNG 100C/BỊCH",
+      "name": "Muỗng HK - 17cm TRẮNG 100C/BỊCH",
       "sku": null,
       "imageUrl": null,
       "imageKind": "missing",
@@ -2380,7 +2369,7 @@ window.MAGASIN_CATALOG = {
     {
       "sourceRow": 238,
       "group": "Muỗng",
-      "name": "Muõng HK - 17cm MÀU 100C/BỊCH",
+      "name": "Muỗng HK - 17cm MÀU 100C/BỊCH",
       "sku": null,
       "imageUrl": null,
       "imageKind": "missing",
@@ -2390,7 +2379,7 @@ window.MAGASIN_CATALOG = {
     {
       "sourceRow": 239,
       "group": "Muỗng",
-      "name": "Muõng GT- 17cm TRẮNG 100C/BỊCH",
+      "name": "Muỗng GT- 17cm TRẮNG 100C/BỊCH",
       "sku": null,
       "imageUrl": null,
       "imageKind": "missing",
@@ -2400,7 +2389,7 @@ window.MAGASIN_CATALOG = {
     {
       "sourceRow": 240,
       "group": "Muỗng",
-      "name": "Muõng GT - 17cm MÀU 100C/BỊCH",
+      "name": "Muỗng GT - 17cm MÀU 100C/BỊCH",
       "sku": null,
       "imageUrl": null,
       "imageKind": "missing",
@@ -2410,7 +2399,7 @@ window.MAGASIN_CATALOG = {
     {
       "sourceRow": 241,
       "group": "Muỗng",
-      "name": "Muõng GT- 15cm TRẮNG 100C/BỊCH",
+      "name": "Muỗng GT- 15cm TRẮNG 100C/BỊCH",
       "sku": null,
       "imageUrl": "https://www.kinhdoanhtrasua.com/wp-content/uploads/2025/09/2-1.jpg",
       "imageKind": "reference",
@@ -2420,7 +2409,7 @@ window.MAGASIN_CATALOG = {
     {
       "sourceRow": 242,
       "group": "Muỗng",
-      "name": "Muõng GT - 15cm MÀU 100C/BỊCH",
+      "name": "Muỗng GT - 15cm MÀU 100C/BỊCH",
       "sku": null,
       "imageUrl": null,
       "imageKind": "missing",

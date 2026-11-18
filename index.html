@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261118-16">
+<link rel="stylesheet" href="styles.css?v=20261118-17">
 </head>
 <body>
 
@@ -226,7 +226,7 @@
       <div class="o-steps">
 
         <section class="card o-step" id="oStep1">
-          <div class="o-head"><span class="num-badge">1</span><div><h2 class="t-h4">Chọn sản phẩm</h2><p class="hint">232 sản phẩm: ly, tô, nắp, hộp, ống hút, muỗng và bọc.</p></div></div>
+          <div class="o-head"><span class="num-badge">1</span><div><h2 class="t-h4">Chọn sản phẩm</h2><p class="hint" id="catalogSummary">Sản phẩm thật: ly, tô, nắp, hộp, ống hút, muỗng và bọc.</p></div></div>
           <div class="filter-group"><span class="filter-label">Danh mục sản phẩm</span><div class="product-tabs" id="productTabs" role="tablist" aria-label="Danh mục sản phẩm"></div></div>
           <div class="filter-group" id="typeGroup"><span class="filter-label" id="typeLabel">Phân loại</span><div class="o-types" id="typeGrid"></div></div>
           <div class="field product-qty"><span class="label">Số lượng</span>
@@ -317,7 +317,7 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/products.js?v=20261118-16"></script>
+<script src="assets/products.js?v=20261118-17"></script>
 <script>
 (()=>{
 const TYPES=[
@@ -451,6 +451,7 @@ const ACCESSORY_ITEMS=CATALOG.accessories.map(p=>({
 }));
 const ALL_PRODUCT_ITEMS=[...PRODUCT_ITEMS,...ACCESSORY_ITEMS];
 const PRODUCT_ITEM_BY_KEY=new Map(ALL_PRODUCT_ITEMS.map(p=>[p.key,p]));
+$('catalogSummary').textContent=`${ALL_PRODUCT_ITEMS.length} sản phẩm: ly, tô, nắp, hộp, ống hút, muỗng và bọc.`;
 const TYPE_COUNTS=PRODUCT_ITEMS.reduce((o,p)=>(o[p.type]=(o[p.type]||0)+1,o),{});
 const PRODUCT_TABS=[
  {id:'cups',label:'Ly',icon:'assets/category-icons/cup.png',count:PRODUCT_ITEMS.filter(p=>p.tab==='cups').length},
@@ -613,7 +614,7 @@ async function copyText(txt,msg){
   const list=base.filter(p=>(q||!drinkware||state.type==='all'||p.type===state.type)&&productMatches(p,q));
   const visible=list.slice(0,state.visibleProducts);
   $('productGrid').innerHTML=visible.map(p=>`<button type="button" class="product-card" data-product="${p.key}" aria-pressed="${p.key===state.productKey}">
-   <span class="product-media">${p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="${esc(p.productName)}" loading="lazy" referrerpolicy="no-referrer">`:slotIn('Chưa có ảnh')}</span>
+   <span class="product-media">${p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="" aria-hidden="true" loading="lazy" referrerpolicy="no-referrer">`:`<span class="product-missing" aria-hidden="true"><img src="${esc(PRODUCT_TABS.find(t=>t.id===p.tab)?.icon||'assets/category-icons/cup.png')}" alt=""><small>Chưa có ảnh</small></span>`}</span>
    <span class="product-body"><b>${esc(p.productName)}</b><span class="product-meta">${p.sku?esc(p.sku):'Chưa có mã'}${p.d?(['cups','bowls'].includes(p.tab)?' · Miệng '+esc(p.d)+' mm':' · '+esc(p.d)):''}</span></span></button>`).join('')||'<div class="catalog-empty">Không tìm thấy sản phẩm phù hợp.</div>';
   $('productGrid').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{const media=img.closest('.product-media');media.innerHTML=slotIn('Ảnh chưa tải được')}));
   $('catalogMore').hidden=list.length<=visible.length;
@@ -723,10 +724,14 @@ function orderText(o){
  t+=`\nNhận hàng: ${o.contact.deliv}${o.contact.province?' ('+o.contact.province+')':''}${o.contact.needBy?'\nCần trước: '+o.contact.needBy.split('-').reverse().join('/'):''}${o.contact.note?'\nGhi chú: '+o.contact.note:''}`;
  return t;
 }
-const SHEET_ORDER_ENDPOINT='https://script.google.com/macros/s/AKfycbwekw6QxegElRbCTE2davW4Q2-Z43KxTAKPeltc_h-Tz4ohYaLTw2GWjsghrPrkfKjhNA/exec';
 async function saveOrderToSheet(order){
- const body=new URLSearchParams({payload:JSON.stringify(order)});
- await fetch(SHEET_ORDER_ENDPOINT,{method:'POST',mode:'no-cors',body,keepalive:true});
+ const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),15000);
+ try{
+  const res=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order),signal:ctrl.signal});
+  const data=await res.json().catch(()=>({ok:false,error:'Phản hồi không hợp lệ'}));
+  if(!res.ok||data.ok!==true)throw new Error(data.error||`Không gửi được đơn (${res.status})`);
+  return data;
+ }finally{clearTimeout(timer)}
 }
 let lastOrder=null,submitting=false;
 async function submit(){
@@ -752,6 +757,13 @@ async function submit(){
  }catch(err){saved=false}
  lastOrder={o,saved,upNote};renderDone();submitting=false;nb.disabled=false;nb.innerHTML='Gửi yêu cầu';go('da-gui');
 }
+async function retryLastOrder(){
+ if(!lastOrder||lastOrder.saved||submitting)return;
+ submitting=true;const b=$('retryOrder');if(b){b.disabled=true;b.textContent='Đang gửi lại…'}
+ try{await saveOrderToSheet(lastOrder.o);lastOrder.saved=true;renderDone()}
+ catch(err){toast('Chưa gửi được. Kiểm tra mạng rồi thử lại.');if(b){b.disabled=false;b.textContent='Thử gửi lại'}}
+ finally{submitting=false}
+}
 function renderDone(){
  const {o,saved,upNote}=lastOrder,txt=orderText(o);
  $('done').innerHTML=`
@@ -759,12 +771,13 @@ function renderDone(){
   <h1>${saved?'Đã gửi yêu cầu':'Chưa gửi được lên hệ thống'}</h1>
   <p>Mã đơn <span class="code num">${o.code}</span></p>
   ${saved?`<p style="color:var(--ink-2)">Đơn đã vào hàng chờ của xưởng. Xưởng sẽ nhắn Zalo số <b class="num">${esc(o.contact.phone)}</b> để báo giá${o.kind==='B'?' và phí thiết kế':''}.</p>`
-   :`<div class="note warn">${icon('info')}<span>Trang này chưa nối với hệ thống nhận đơn. Bấm Chép nội dung đơn rồi dán vào Zalo xưởng.</span></div>`}
+   :`<div class="note warn">${icon('info')}<span>Đơn chưa gửi được. Nội dung vẫn được giữ nguyên; bạn có thể thử lại hoặc gửi qua Zalo.</span></div>`}
   ${upNote?`<div class="note warn">${icon('info')}<span>${esc(upNote)}</span></div>`:''}
   <pre>${esc(txt)}</pre>
-  <div class="btns"><button class="btn btn-pri" id="copyOrder">${icon('copy')}Chép nội dung đơn</button><a class="btn btn-sec" href="https://zalo.me/0386135350" target="_blank" rel="noopener">Nhắn Zalo cho xưởng</a><button class="btn btn-text" id="newOrder">Đặt đơn khác</button></div>
+  <div class="btns">${saved?'':`<button class="btn btn-pri" id="retryOrder">Thử gửi lại</button>`}<button class="btn ${saved?'btn-pri':'btn-sec'}" id="copyOrder">${icon('copy')}Chép nội dung đơn</button><a class="btn btn-sec" href="https://zalo.me/0386135350" target="_blank" rel="noopener">Nhắn Zalo cho xưởng</a><button class="btn btn-text" id="newOrder">Đặt đơn khác</button></div>
   <p class="hint">Zalo xưởng: <span class="num">0386 135 350</span> hoặc <span class="num">058 9438 067</span></p>`;
  $('copyOrder').onclick=()=>copyText(txt,'Đã chép nội dung đơn');
+ if($('retryOrder'))$('retryOrder').onclick=retryLastOrder;
  $('newOrder').onclick=()=>{state.lines=[];state.filesA=[];state.filesB=[];$('orderForm').reset();setKind('A');renderFiles();renderBuilder();go('dat-hang')};
 }
 
