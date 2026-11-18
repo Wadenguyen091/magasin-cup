@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261118-9">
+<link rel="stylesheet" href="styles.css?v=20261118-10">
 </head>
 <body>
 
@@ -221,12 +221,11 @@
 <!-- ============ ĐẶT HÀNG ============ -->
 <main id="v-dat-hang" class="page" hidden>
   <div class="wrap">
-    <div class="page-head"><div><h1>Đặt in nhanh</h1><p>3 bước, chưa tới 3 phút. Xưởng nhắn Zalo báo giá trong 30 phút.</p></div></div>
+    <div class="page-head order-page-head"><div><h1>Đặt in nhanh</h1><p>3 bước, chưa tới 3 phút. Báo giá qua Zalo.</p></div><div class="catalog-tools"><label class="catalog-search"><input class="inp" id="productSearch" type="search" aria-label="Tìm sản phẩm" placeholder="Tìm tên, dung tích hoặc mã SKU…"></label><span class="catalog-count num" id="productCount" aria-live="polite"></span></div></div>
     <form class="order" id="orderForm" novalidate>
       <div class="o-steps">
 
         <section class="card o-step" id="oStep1">
-          <div class="catalog-tools"><label class="catalog-search"><span class="label">Tìm sản phẩm</span><input class="inp" id="productSearch" type="search" placeholder="Tên ly, dung tích hoặc mã SKU…"></label><span class="catalog-count" id="productCount"></span></div>
           <div class="o-head"><span class="num-badge">1</span><div><h2 class="t-h4">Chọn sản phẩm</h2><p class="hint">Đủ 232 sản phẩm thật: ly, tô, nắp, hộp, ống hút, muỗng và bọc.</p></div></div>
           <div class="filter-group"><span class="filter-label">Danh mục sản phẩm</span><div class="product-tabs" id="productTabs" role="tablist" aria-label="Danh mục sản phẩm"></div></div>
           <div class="filter-group" id="typeGroup"><span class="filter-label" id="typeLabel">Phân loại</span><div class="o-types" id="typeGrid"></div></div>
@@ -278,11 +277,9 @@
 
       <aside class="side">
         <div class="o-bill">
-          <div class="bill-head"><svg class="bill-logo" role="img" aria-label="Magasin Cup"><use href="#i-magasin"/></svg><span class="bill-kicker">Phiếu yêu cầu</span><h3>Đơn của bạn</h3><span class="bill-status">Chờ báo giá</span></div>
+          <div class="bill-head"><svg class="bill-logo" role="img" aria-label="Magasin Cup"><use href="#i-magasin"/></svg><h3>Đơn của bạn</h3></div>
           <div class="sum" id="sum"></div>
-          <div class="bill-note">Đây là phiếu yêu cầu. Xưởng sẽ nhắn Zalo để xác nhận mẫu, giá và ngày giao.</div>
         </div>
-        <div class="card help"><span class="ib"><svg class="ico"><use href="#i-chat"/></svg></span><div><b>Cần hỏi trước?</b>Zalo xưởng <span class="num">0386 135 350</span></div></div>
       </aside>
     </form>
   </div>
@@ -319,7 +316,7 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/products.js?v=20261118-9"></script>
+<script src="assets/products.js?v=20261118-10"></script>
 <script>
 (()=>{
 const TYPES=[
@@ -613,7 +610,7 @@ async function copyText(txt,msg){
   const drinkware=['cups','bowls'].includes(state.tab);
   const base=drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab);
   const list=base.filter(p=>(!drinkware||state.type==='all'||p.type===state.type)&&productMatches(p,q));
-  $('productCount').textContent=`${list.length} / ${base.length} sản phẩm`;
+  $('productCount').textContent=`${list.length}/${base.length}`;
   $('productGrid').innerHTML=list.map(p=>`<button type="button" class="product-card" data-product="${p.key}" aria-pressed="${p.key===state.productKey}">
    <span class="product-media">${p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="${esc(p.productName)}" loading="lazy" referrerpolicy="no-referrer">`:slotIn('Chưa có ảnh')}</span>
    <span class="product-body"><b>${esc(p.productName)}</b><span class="product-meta">${p.sku?esc(p.sku):'Chưa có mã'}${p.d?(['cups','bowls'].includes(p.tab)?' · Miệng '+esc(p.d)+' mm':' · '+esc(p.d)):''}</span></span></button>`).join('')||'<div class="catalog-empty">Không tìm thấy sản phẩm phù hợp.</div>';
@@ -681,13 +678,14 @@ $('deliv').addEventListener('click',e=>{const b=e.target.closest('[data-deliv]')
 /* ---------- Tóm tắt ---------- */
 function renderSummary(){
  const L=allLines(),tot=L.reduce((a,l)=>a+l.qty,0),hasPrint=L.some(l=>['cups','bowls'].includes(l.tab));
+ if(!L.length){$('sum').innerHTML='<div class="bill-empty">Chưa có sản phẩm</div>';return}
  $('sum').innerHTML=`
-  <div class="bill-items">${L.length?L.map((l,i)=>`<div class="bill-item"><span class="bill-index">${i+1}</span><span class="bill-product"><b>${esc(lineText(l))}</b><small>${esc(l.sku||'Chưa có mã')}</small></span><strong class="num">${fmt(l.qty)}<small>${esc(l.unit||'cái')}</small></strong></div>`).join(''):'<div class="bill-empty">Chưa chọn sản phẩm</div>'}</div>
+  <div class="bill-items">${L.map((l,i)=>`<div class="bill-item"><span class="bill-index">${i+1}</span><span class="bill-product"><b>${esc(lineText(l))}</b><small>${esc(l.sku||'Chưa có mã')}</small></span><strong class="num">${fmt(l.qty)}<small>${esc(l.unit||'cái')}</small></strong></div>`).join('')}</div>
   <div class="bill-details">
    ${hasPrint?`<div class="bill-row"><span>Logo</span><strong>${state.kind==='A'?(state.filesA.length?state.filesA.length+' hình':'Chưa tải'):'Xưởng vẽ giúp'}</strong></div><div class="bill-row"><span>Quy cách in</span><strong>${state.sides} mặt</strong></div>`:''}
    <div class="bill-row"><span>Nhận hàng</span><strong>${esc(state.deliv)}</strong></div>
   </div>
-  <div class="bill-total"><span>Tổng số lượng<small>${L.length} sản phẩm</small></span><strong class="num">${fmt(tot)}<small>đơn vị</small></strong></div>
+  <div class="bill-total"><span>Tổng số lượng</span><strong class="num">${fmt(tot)}<small>đơn vị</small></strong></div>
   <div class="bill-price"><span>Giá đơn hàng</span><strong>Báo qua Zalo</strong></div>`;
 }
 
