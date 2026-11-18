@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261118-11">
+<link rel="stylesheet" href="styles.css?v=20261118-12">
 </head>
 <body>
 
@@ -267,7 +267,7 @@
             <div class="field"><label class="label" for="cPhone">Số Zalo</label><input class="inp num" id="cPhone" inputmode="tel" autocomplete="tel" placeholder="vd 0901 234 567"></div>
           </div>
           <div class="field"><label class="label" for="cShop">Tên quán</label><input class="inp" id="cShop" placeholder="vd Cà Phê Gió"></div>
-          <div class="field"><span class="label">Nhận hàng</span><div class="chips" id="deliv"></div><input class="inp" id="cProvince" placeholder="Gửi đi tỉnh nào" hidden></div>
+          <div class="field"><span class="label">Nhận hàng</span><div class="chips" id="deliv"></div><input class="inp" id="cProvince" aria-label="Tỉnh nhận hàng" placeholder="Gửi đi tỉnh nào" hidden></div>
           <div class="field"><label class="label" for="cNote">Ghi chú <span class="opt">(không bắt buộc)</span></label><textarea class="inp" id="cNote" placeholder="vd cần trước ngày 20, thêm nắp cầu"></textarea></div>
           <label class="check"><input type="checkbox" id="cConsent"><span>Tôi đồng ý cho xưởng dùng thông tin này để báo giá và làm đơn, theo <button type="button" class="linkish" data-go="chinh-sach-bao-mat">Chính sách bảo mật</button>. Logo gửi là của quán tôi.</span></label>
           <div class="err-list" id="errs"></div>
@@ -316,7 +316,7 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/products.js?v=20261118-11"></script>
+<script src="assets/products.js?v=20261118-12"></script>
 <script>
 (()=>{
 const TYPES=[
@@ -608,8 +608,8 @@ async function copyText(txt,msg){
  function renderProducts(){
   const q=$('productSearch').value.trim().toLowerCase();
   const drinkware=['cups','bowls'].includes(state.tab);
-  const base=drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab);
-  const list=base.filter(p=>(!drinkware||state.type==='all'||p.type===state.type)&&productMatches(p,q));
+  const base=q?ALL_PRODUCT_ITEMS:(drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab));
+  const list=base.filter(p=>(q||!drinkware||state.type==='all'||p.type===state.type)&&productMatches(p,q));
   $('productGrid').innerHTML=list.map(p=>`<button type="button" class="product-card" data-product="${p.key}" aria-pressed="${p.key===state.productKey}">
    <span class="product-media">${p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="${esc(p.productName)}" loading="lazy" referrerpolicy="no-referrer">`:slotIn('Chưa có ảnh')}</span>
    <span class="product-body"><b>${esc(p.productName)}</b><span class="product-meta">${p.sku?esc(p.sku):'Chưa có mã'}${p.d?(['cups','bowls'].includes(p.tab)?' · Miệng '+esc(p.d)+' mm':' · '+esc(p.d)):''}</span></span></button>`).join('')||'<div class="catalog-empty">Không tìm thấy sản phẩm phù hợp.</div>';
@@ -633,14 +633,15 @@ async function copyText(txt,msg){
   const c=cur(),exists=c&&state.lines.some(l=>l.productKey===c.key);
   $('activeProductName').textContent=c?c.productName:'Mẫu đang chọn';
   $('activeProductQty').textContent=c?`${fmt(state.qty)} ${c.unit||'cái'}`:'';
-  $('addLine').innerHTML=icon(exists?'check':'plus')+(exists?'Cập nhật trong phiếu':'Thêm vào phiếu');
+  const action=exists?'Cập nhật':'Thêm vào phiếu';
+  $('addLine').innerHTML=icon(exists?'check':'plus')+action+(state.lines.length?` · ${state.lines.length}`:'');
   $('lineCount').textContent=state.lines.length?`${state.lines.length} mẫu đã chọn`:'Chưa có sản phẩm';
   $('linesEmpty').hidden=state.lines.length>0;
   renderSummary();
  }
  $('productTabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;state.tab=b.dataset.tab;state.type='all';const drinkware=['cups','bowls'].includes(state.tab),base=drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab);state.productKey=base[0]?.key||state.productKey;$('productSearch').value='';renderBuilder()});
  $('typeGrid').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;state.type=b.dataset.t;state.productKey=PRODUCT_ITEMS.find(p=>p.tab===state.tab&&(state.type==='all'||p.type===state.type))?.key||state.productKey;renderBuilder()});
- $('productGrid').addEventListener('click',e=>{const b=e.target.closest('[data-product]');if(!b)return;state.productKey=b.dataset.product;renderProducts();renderLines()});
+ $('productGrid').addEventListener('click',e=>{const b=e.target.closest('[data-product]');if(!b)return;const p=PRODUCT_ITEM_BY_KEY.get(b.dataset.product);if(!p)return;state.productKey=p.key;state.tab=p.tab;state.type=['cups','bowls'].includes(p.tab)?p.type:'all';renderBuilder()});
  $('productSearch').addEventListener('input',renderProducts);
  $('qtyChips').addEventListener('click',e=>{const b=e.target.closest('[data-qty]');if(!b)return;state.qty=+b.dataset.qty;$('qtyCustom').value='';renderBuilder()});
  $('qtyCustom').addEventListener('input',e=>{const n=parseInt(e.target.value.replace(/\D/g,''),10);e.target.value=isNaN(n)?'':n;if(n)state.qty=n;
