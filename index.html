@@ -136,16 +136,26 @@
 <!-- ============ THƯ VIỆN PROMPT ============ -->
 <main id="v-thu-vien-prompt" class="page" hidden>
   <div class="wrap">
-    <div class="page-head pr-head"><div><h1>Thư viện câu lệnh AI</h1></div></div>
+    <div class="page-head pr-head">
+      <div>
+        <span class="eyebrow">TỰ LÀM LOGO MIỄN PHÍ</span>
+        <h1>Chọn mẫu, để AI vẽ logo cho bạn</h1>
+        <p>Copy câu lệnh rồi dán vào ChatGPT, Gemini hoặc Copilot. AI sẽ hỏi về quán và cùng bạn chỉnh tới khi ưng.</p>
+      </div>
+    </div>
     <ol class="pr-steps">
       <li class="card card--pad"><span class="num-badge">1</span><div><b class="card-title">Chọn phong cách</b><p class="card-desc">Tìm hoặc lướt xem, ưng kiểu logo nào thì chọn kiểu đó.</p></div></li>
-      <li class="card card--pad"><span class="num-badge">2</span><div><b class="card-title">Bấm Copy</b><p class="card-desc">Chép câu lệnh của phong cách đó.</p></div></li>
-      <li class="card card--pad"><span class="num-badge">3</span><div><b class="card-title">Dán vào AI, kể về quán</b><p class="card-desc">Dán vào ChatGPT hoặc Gemini, rồi kể tên quán, bán gì, màu thích. AI vẽ đúng phong cách.</p></div></li>
+      <li class="card card--pad"><span class="num-badge">2</span><div><b class="card-title">Copy câu lệnh</b><p class="card-desc">Bấm một lần để chép toàn bộ câu lệnh.</p></div></li>
+      <li class="card card--pad"><span class="num-badge">3</span><div><b class="card-title">Dán vào AI và chỉnh</b><p class="card-desc">Trả lời vài câu hỏi, rồi yêu cầu AI sửa tiếp tới khi đúng ý.</p></div></li>
     </ol>
     <div class="pr-bar">
       <div class="search"><svg class="search-ic" aria-hidden="true"><use href="#i-search"/></svg><input class="inp" id="prQ" type="search" placeholder="Gõ phong cách bạn tìm" aria-label="Tìm phong cách logo" autocomplete="off"></div>
     </div>
     <div class="prompts" id="prompts"></div>
+    <div class="card card--pad pr-note">
+      <div><b class="card-title">Logo tạo xong dùng thế nào?</b><p class="card-desc">Tải file PNG nền trong suốt và gửi cùng phiếu đặt in. Câu lệnh đã yêu cầu thêm bản đơn sắc để in rõ trên ly.</p></div>
+      <a class="btn btn-sec" href="#dat-hang">Đặt in với logo này</a>
+    </div>
   </div>
 </main>
 
@@ -816,34 +826,34 @@ function capP(name){if(!(name in capCache))capCache[name]=(async()=>{try{if(!win
    Câu lệnh giống "skill": dán vào AI để AI hiểu phong cách + quy tắc in ly, sau đó khách tự kể về quán.
    img: ảnh mẫu do AI tạo theo phong cách đó (để trống thì hiện khung chờ). */
 const PR_HEAD='Bạn là nhà thiết kế logo cho quán nước và quán ăn vặt ở Việt Nam. Logo sẽ được in lên ly nhựa và ly giấy.\n\nPHONG CÁCH: ';
-const PR_RULES='\n\nQUY TẮC ĐỂ IN ĐƯỢC LÊN LY:\n- Nền trắng trơn, logo nằm giữa, khung vuông.\n- Hình phẳng kiểu vector, nét rõ, tối đa 3 màu.\n- Không chuyển màu, không đổ bóng, không dùng ảnh chụp, không vẽ ly giả.\n- In nhỏ trên ly vẫn nhìn rõ.\n- Chữ tiếng Việt phải đúng dấu. Tên dài thì viết gọn.\n\nCÁCH LÀM:\n1. Hỏi tôi: tên quán, quán bán gì, màu tôi thích, muốn có hình gì không. Điều gì tôi đã nói thì không hỏi lại.\n2. Vẽ 1 logo đúng phong cách trên, theo những gì tôi kể.\n3. Tôi muốn sửa gì thì sửa tiếp trên mẫu đó, giữ nguyên phong cách.\n\nĐã hiểu thì bắt đầu hỏi tôi về quán.';
+const PR_RULES='\n\nQUY TẮC ĐỂ IN ĐƯỢC LÊN LY:\n- Chỉ tạo logo riêng, không đặt logo lên ly, bảng hiệu hay bất kỳ mockup nào.\n- File logo phải tách nền, nền trong suốt (transparent PNG), logo nằm giữa khung vuông và có khoảng trống an toàn.\n- Hình phẳng kiểu vector, nét rõ, tối đa 3 màu; không chuyển màu, không đổ bóng, không dùng ảnh chụp.\n- Logo phải đọc rõ khi in nhỏ. Không dùng nét quá mảnh hoặc chi tiết li ti.\n- Chữ tiếng Việt phải đúng dấu. Tên dài thì viết gọn.\n- Sau bản màu, tạo thêm 1 bản đơn sắc chỉ dùng một màu mực, vẫn giữ đúng hình và chữ để xưởng in lên ly.\n\nCÁCH LÀM:\n1. Hỏi tôi: tên quán, quán bán gì, màu tôi thích, muốn có hình gì không. Điều gì tôi đã nói thì không hỏi lại.\n2. Vẽ 1 logo đúng phong cách trên, theo những gì tôi kể.\n3. Tôi muốn sửa gì thì sửa tiếp trên mẫu đó, giữ nguyên phong cách.\n4. Khi tôi chốt, xuất bản màu nền trong suốt và bản đơn sắc nền trong suốt.\n\nĐã hiểu thì bắt đầu hỏi tôi về quán.';
 const PROMPTS=[
- {name:'Chibi đáng yêu',kw:'cute de thuong nhan vat',img:'',desc:'Nhân vật tròn trịa, mắt to, má hồng',style:'Chibi đáng yêu. Nhân vật kiểu chibi đầu to thân nhỏ, mắt to tròn, má hồng, nét viền dày đều, màu tươi nhẹ. Nhân vật là gì thì theo lời tôi kể. Tên quán bằng chữ tròn mập, dễ đọc.'},
- {name:'Thư pháp',kw:'but long viet tay chu',img:'',desc:'Tên quán viết bút lông mềm mại',style:'Thư pháp. Tên quán là phần chính, viết bằng nét bút lông có đậm nhạt tự nhiên, bay bổng nhưng vẫn đọc được. Có thể thêm 1 nét trang trí nhỏ hoặc 1 con dấu đỏ nhỏ. 1 đến 2 màu.'},
- {name:'Nhí nhảnh',kw:'vui tuoi tre trung sticker ruc ro',img:'',desc:'Màu rực, chữ nghiêng, vui nhộn',style:'Nhí nhảnh. Chữ mập tròn, hơi nghiêng như đang nhảy, có viền trắng dày như sticker. Màu tươi rực, thêm vài chi tiết vui như ngôi sao nhỏ, tia sáng, giọt nước. Trẻ trung, năng động.'},
- {name:'Hiện đại',kw:'modern hinh hoc chuyen nghiep',img:'',desc:'Gọn gàng, khối hình học, chữ đậm',style:'Hiện đại. Biểu tượng đơn giản dựng từ hình học (tròn, vuông, vòng cung), chữ không chân đậm, cân đối, khoảng cách rộng rãi. 1 đến 2 màu, nhìn chuyên nghiệp.'},
- {name:'Tối giản',kw:'minimal don gian it chi tiet',img:'',desc:'Ít chi tiết, nhiều khoảng trắng, 1 màu',style:'Tối giản. Chỉ có tên quán, hoặc tên kèm 1 biểu tượng thật đơn giản. Bỏ mọi chi tiết thừa, nhiều khoảng trắng, chỉ dùng 1 màu.'},
- {name:'Cổ điển',kw:'vintage xua co dien',img:'',desc:'Vintage, chữ có chân, màu trầm',style:'Cổ điển (vintage). Chữ có chân, khung trang trí kiểu xưa, có thể ghi năm mở quán (EST.). Màu trầm như nâu, kem, xanh rêu.'},
- {name:'Sang trọng',kw:'cao cap luxury vang',img:'',desc:'Nét mảnh tinh tế, màu tối với vàng',style:'Sang trọng. Chữ có chân mảnh, chữ in hoa giãn cách rộng, đường kẻ mảnh tinh tế. Màu tối (đen, nâu, xanh đậm) đi cùng vàng đồng. Ít chi tiết, cao cấp.'},
- {name:'Vẽ tay',kw:'hand drawn phan but moc mac thu cong',img:'',desc:'Nét vẽ tay mộc mạc như phấn, bút',style:'Vẽ tay. Nét vẽ tay mộc mạc như bút mực hoặc phấn, hơi run tự nhiên, có thể có vài hình vẽ nhỏ quanh tên quán. Gần gũi, thủ công.'},
- {name:'Hoài cổ Việt',kw:'retro viet nam xua bao bi gach bong',img:'',desc:'Retro kiểu bao bì Việt xưa',style:'Hoài cổ Việt. Kiểu bao bì, bảng hiệu Việt Nam thập niên 80, 90: chữ in đậm kiểu xưa, khung bo tròn, màu đỏ gạch, vàng, kem, xanh ngọc. Có thể có hoa văn nhẹ như gạch bông.'},
- {name:'Cá tính',kw:'duong pho street manh me dam',img:'',desc:'Chữ to đậm, tương phản mạnh',style:'Cá tính đường phố. Chữ to đậm, khối chữ chắc, có thể hơi méo hoặc chồng lớp, màu tương phản mạnh (đen trắng kèm 1 màu nổi). Mạnh mẽ, trẻ trung.'},
- {name:'Con dấu',kw:'huy hieu tem badge tron',img:'',desc:'Hình tròn như con tem, tên chạy vòng',style:'Con dấu (huy hiệu). Logo hình tròn như con tem: tên quán chạy vòng quanh mép, biểu tượng ở giữa, có thể thêm chữ phụ ở dưới. 1 màu, nét chắc.'},
- {name:'Nét mảnh',kw:'line art net thanh lich',img:'',desc:'Vẽ bằng nét mảnh, thanh lịch',style:'Nét mảnh (line art). Biểu tượng vẽ bằng 1 nét liền hoặc nét mảnh đều, không tô khối, chữ nhẹ nhàng. 1 màu, thanh lịch.'}];
+ {name:'Chibi đáng yêu',kw:'cute de thuong nhan vat',img:'assets/prompt-library/chibi.png',desc:'Nhân vật tròn trịa, mắt to, má hồng',style:'Chibi đáng yêu. Nhân vật kiểu chibi đầu to thân nhỏ, mắt to tròn, má hồng, nét viền dày đều, màu tươi nhẹ. Nhân vật là gì thì theo lời tôi kể. Tên quán bằng chữ tròn mập, dễ đọc.'},
+ {name:'Thư pháp',kw:'but long viet tay chu',img:'assets/prompt-library/thu-phap.png',desc:'Tên quán viết bút lông mềm mại',style:'Thư pháp. Tên quán là phần chính, viết bằng nét bút lông có đậm nhạt tự nhiên, bay bổng nhưng vẫn đọc được. Có thể thêm 1 nét trang trí nhỏ hoặc 1 con dấu đỏ nhỏ. 1 đến 2 màu.'},
+ {name:'Nhí nhảnh',kw:'vui tuoi tre trung sticker ruc ro',img:'assets/prompt-library/nhi-nhanh.png',desc:'Màu rực, chữ nghiêng, vui nhộn',style:'Nhí nhảnh. Chữ mập tròn, hơi nghiêng như đang nhảy, có viền trắng dày như sticker. Màu tươi rực, thêm vài chi tiết vui như ngôi sao nhỏ, tia sáng, giọt nước. Trẻ trung, năng động.'},
+ {name:'Hiện đại',kw:'modern hinh hoc chuyen nghiep',img:'assets/prompt-library/hien-dai.png',desc:'Gọn gàng, khối hình học, chữ đậm',style:'Hiện đại. Biểu tượng đơn giản dựng từ hình học (tròn, vuông, vòng cung), chữ không chân đậm, cân đối, khoảng cách rộng rãi. 1 đến 2 màu, nhìn chuyên nghiệp.'},
+ {name:'Tối giản',kw:'minimal don gian it chi tiet',img:'assets/prompt-library/toi-gian.png',desc:'Ít chi tiết, nhiều khoảng trắng, 1 màu',style:'Tối giản. Chỉ có tên quán, hoặc tên kèm 1 biểu tượng thật đơn giản. Bỏ mọi chi tiết thừa, nhiều khoảng trắng, chỉ dùng 1 màu.'},
+ {name:'Cổ điển',kw:'vintage xua co dien',img:'assets/prompt-library/co-dien.png',desc:'Vintage, chữ có chân, màu trầm',style:'Cổ điển (vintage). Chữ có chân, khung trang trí kiểu xưa, có thể ghi năm mở quán (EST.). Màu trầm như nâu, kem, xanh rêu.'},
+ {name:'Sang trọng',kw:'cao cap luxury vang',img:'assets/prompt-library/sang-trong.png',desc:'Nét mảnh tinh tế, màu tối với vàng',style:'Sang trọng. Chữ có chân mảnh, chữ in hoa giãn cách rộng, đường kẻ mảnh tinh tế. Màu tối (đen, nâu, xanh đậm) đi cùng vàng đồng. Ít chi tiết, cao cấp.'},
+ {name:'Vẽ tay',kw:'hand drawn phan but moc mac thu cong',img:'assets/prompt-library/ve-tay.png',desc:'Nét vẽ tay mộc mạc như phấn, bút',style:'Vẽ tay. Nét vẽ tay mộc mạc như bút mực hoặc phấn, hơi run tự nhiên, có thể có vài hình vẽ nhỏ quanh tên quán. Gần gũi, thủ công.'},
+ {name:'Hoài cổ Việt',kw:'retro viet nam xua bao bi gach bong',img:'assets/prompt-library/hoai-co-viet.png',desc:'Retro kiểu bao bì Việt xưa',style:'Hoài cổ Việt. Kiểu bao bì, bảng hiệu Việt Nam thập niên 80, 90: chữ in đậm kiểu xưa, khung bo tròn, màu đỏ gạch, vàng, kem, xanh ngọc. Có thể có hoa văn nhẹ như gạch bông.'},
+ {name:'Cá tính',kw:'duong pho street manh me dam',img:'assets/prompt-library/ca-tinh.png',desc:'Chữ to đậm, tương phản mạnh',style:'Cá tính đường phố. Chữ to đậm, khối chữ chắc, có thể hơi méo hoặc chồng lớp, màu tương phản mạnh (đen trắng kèm 1 màu nổi). Mạnh mẽ, trẻ trung.'},
+ {name:'Con dấu',kw:'huy hieu tem badge tron',img:'assets/prompt-library/con-dau.png',desc:'Hình tròn như con tem, tên chạy vòng',style:'Con dấu (huy hiệu). Logo hình tròn như con tem: tên quán chạy vòng quanh mép, biểu tượng ở giữa, có thể thêm chữ phụ ở dưới. 1 màu, nét chắc.'},
+ {name:'Nét mảnh',kw:'line art net thanh lich',img:'assets/prompt-library/net-manh.png',desc:'Một nét liền, thanh lịch, in nhỏ vẫn rõ',style:'Nét mảnh (line art). Biểu tượng vẽ bằng 1 nét liền hoặc nét đều, không tô khối, chữ nhẹ nhàng. Chỉ dùng 1 màu. Nét phải đủ dày để không mất khi in nhỏ trên ly.'}];
 const fillPrompt=p=>PR_HEAD+p.style+PR_RULES;
 const norm=t=>t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
 function renderPrompts(){
  const q=norm($('prQ').value.trim());
  const html=PROMPTS.map((p,i)=>q&&!norm(p.name+' '+p.desc+' '+p.kw).includes(q)?'':`<div class="card card--media pr">${p.img?`<div class="media" data-img="${esc(p.img)}" data-w="600" data-alt="Mẫu logo phong cách ${esc(p.name)}"></div>`:`<div class="media slot">${slotIn('Ảnh mẫu')}</div>`}
   <div class="card-tx"><b class="card-title">${esc(p.name)}</b><span class="card-desc">${esc(p.desc)}</span></div>
-  <button class="btn btn-sec btn-sm btn-block" data-prcopy="${i}">${icon('copy')}Copy</button>
-  <details class="pr-more"><summary>Xem câu lệnh</summary><pre>${esc(fillPrompt(p))}</pre></details></div>`).join('');
+  <button class="btn btn-pri btn-sm btn-block" data-prcopy="${i}">${icon('copy')}Copy câu lệnh</button>
+  <details class="pr-more"><summary>Xem toàn bộ câu lệnh</summary><pre>${esc(fillPrompt(p))}</pre></details></div>`).join('');
  $('prompts').innerHTML=html||`<p class="pr-empty">Chưa có phong cách "${esc($('prQ').value.trim())}". Thử gõ chữ khác, vd chibi, thư pháp.</p>`;
  loadImgs($('prompts'));
 }
 renderPrompts();
 $('prQ').addEventListener('input',renderPrompts);
-$('prompts').addEventListener('click',e=>{const b=e.target.closest('[data-prcopy]');if(!b)return;const p=PROMPTS[+b.dataset.prcopy];copyText(fillPrompt(p),'Đã copy câu lệnh "'+p.name+'". Dán vào AI rồi kể về quán nhé');b.innerHTML=icon('check')+'Đã copy';setTimeout(()=>{b.innerHTML=icon('copy')+'Copy'},1600)});
+$('prompts').addEventListener('click',e=>{const b=e.target.closest('[data-prcopy]');if(!b)return;const p=PROMPTS[+b.dataset.prcopy];copyText(fillPrompt(p),'Đã copy câu lệnh "'+p.name+'". Dán vào AI rồi kể về quán nhé');b.innerHTML=icon('check')+'Đã copy';setTimeout(()=>{b.innerHTML=icon('copy')+'Copy câu lệnh'},1600)});
 
 /* ---------- Khối tính năng: cuộn tới bước nào, ảnh bên phải đổi theo bước đó ---------- */
 (()=>{const root=$('featScroll');if(!root)return;
