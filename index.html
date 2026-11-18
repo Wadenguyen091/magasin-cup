@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261118-12">
+<link rel="stylesheet" href="styles.css?v=20261118-13">
 </head>
 <body>
 
@@ -221,7 +221,7 @@
 <!-- ============ ĐẶT HÀNG ============ -->
 <main id="v-dat-hang" class="page" hidden>
   <div class="wrap">
-    <div class="page-head order-page-head"><div><h1>Đặt in nhanh</h1><p>3 bước, chưa tới 3 phút. Báo giá qua Zalo.</p></div><div class="catalog-tools"><label class="catalog-search"><input class="inp" id="productSearch" type="search" aria-label="Tìm sản phẩm" placeholder="Tìm tên, dung tích hoặc mã SKU…"></label></div></div>
+    <div class="page-head order-page-head"><div><h1>Đặt in nhanh</h1><p>3 bước, chưa tới 3 phút. Báo giá qua Zalo.</p></div><div class="catalog-tools"><label class="catalog-search search"><svg class="search-ic" aria-hidden="true"><use href="#i-search"/></svg><input class="inp" id="productSearch" type="search" aria-label="Tìm sản phẩm" placeholder="Tìm tên, dung tích hoặc mã SKU…"></label></div></div>
     <form class="order" id="orderForm" novalidate>
       <div class="o-steps">
 
@@ -229,11 +229,12 @@
           <div class="o-head"><span class="num-badge">1</span><div><h2 class="t-h4">Chọn sản phẩm</h2><p class="hint">Đủ 232 sản phẩm thật: ly, tô, nắp, hộp, ống hút, muỗng và bọc.</p></div></div>
           <div class="filter-group"><span class="filter-label">Danh mục sản phẩm</span><div class="product-tabs" id="productTabs" role="tablist" aria-label="Danh mục sản phẩm"></div></div>
           <div class="filter-group" id="typeGroup"><span class="filter-label" id="typeLabel">Phân loại</span><div class="o-types" id="typeGrid"></div></div>
-          <div class="product-grid" id="productGrid"></div>
           <div class="field product-qty"><span class="label">Số lượng mẫu đang chọn</span>
             <div class="chips" id="qtyChips"></div>
             <input class="inp qty-inp num" id="qtyCustom" inputmode="numeric" placeholder="Số khác, vd 4000" aria-label="Số lượng khác">
           </div>
+          <div class="product-grid" id="productGrid"></div>
+          <button type="button" class="catalog-more" id="catalogMore">Xem thêm sản phẩm</button>
           <div class="add-to-order"><div><b id="activeProductName">Mẫu đang chọn</b><span class="num" id="activeProductQty">1.000 ly</span></div><button type="button" class="btn btn-pri o-add" id="addLine"><svg class="ico"><use href="#i-plus"/></svg>Thêm vào phiếu</button></div>
           <div class="order-lines"><div class="order-lines-head"><div><span class="filter-label">Sản phẩm trong phiếu</span><b id="lineCount">Chưa có sản phẩm</b></div><span class="order-lines-hint">Có thể chọn nhiều mẫu ly</span></div><div class="o-lines" id="lines"></div><div class="order-lines-empty" id="linesEmpty">Chọn một mẫu và bấm “Thêm vào phiếu”.</div></div>
         </section>
@@ -316,7 +317,7 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/products.js?v=20261118-12"></script>
+<script src="assets/products.js?v=20261118-13"></script>
 <script>
 (()=>{
 const TYPES=[
@@ -597,7 +598,7 @@ async function copyText(txt,msg){
 
 /* ---------- Đơn ---------- */
  /* Ảnh ly: điền img:'assets/ly-xxx.png' vào TYPES (PNG nền trong). Chưa có thì hiện khung chờ. */
- const state={tab:'cups',type:'all',productKey:PRODUCT_ITEMS[0]?.key||'',qty:1000,lines:[],kind:'A',sides:1,filesA:[],filesB:[],deliv:'Lấy tại xưởng'};
+ const state={tab:'cups',type:'all',productKey:PRODUCT_ITEMS[0]?.key||'',qty:1000,lines:[],visibleProducts:12,kind:'A',sides:1,filesA:[],filesB:[],deliv:'Lấy tại xưởng'};
  const QTY=[500,1000,2000,5000];
  const DELIV=['Lấy tại xưởng','Giao trong Cần Thơ','Gửi xe đi tỉnh'];
  function chipsHTML(list,sel,key){return list.map(v=>`<button type="button" class="chip" data-${key}="${esc(v)}" aria-pressed="${sel===v}">${esc(v)}</button>`).join('')}
@@ -610,10 +611,12 @@ async function copyText(txt,msg){
   const drinkware=['cups','bowls'].includes(state.tab);
   const base=q?ALL_PRODUCT_ITEMS:(drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab));
   const list=base.filter(p=>(q||!drinkware||state.type==='all'||p.type===state.type)&&productMatches(p,q));
-  $('productGrid').innerHTML=list.map(p=>`<button type="button" class="product-card" data-product="${p.key}" aria-pressed="${p.key===state.productKey}">
+  const visible=list.slice(0,state.visibleProducts);
+  $('productGrid').innerHTML=visible.map(p=>`<button type="button" class="product-card" data-product="${p.key}" aria-pressed="${p.key===state.productKey}">
    <span class="product-media">${p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="${esc(p.productName)}" loading="lazy" referrerpolicy="no-referrer">`:slotIn('Chưa có ảnh')}</span>
    <span class="product-body"><b>${esc(p.productName)}</b><span class="product-meta">${p.sku?esc(p.sku):'Chưa có mã'}${p.d?(['cups','bowls'].includes(p.tab)?' · Miệng '+esc(p.d)+' mm':' · '+esc(p.d)):''}</span></span></button>`).join('')||'<div class="catalog-empty">Không tìm thấy sản phẩm phù hợp.</div>';
   $('productGrid').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{const media=img.closest('.product-media');media.innerHTML=slotIn('Ảnh chưa tải được')}));
+  $('catalogMore').hidden=list.length<=visible.length;
  }
  function renderBuilder(){
   $('productTabs').innerHTML=PRODUCT_TABS.map(t=>`<button type="button" role="tab" class="product-tab" data-tab="${esc(t.id)}" aria-selected="${state.tab===t.id}"><img src="${esc(t.icon)}" alt="" aria-hidden="true"><span class="product-tab-foot"><span>${esc(t.label)}</span><b>${t.count}</b></span></button>`).join('');
@@ -639,10 +642,11 @@ async function copyText(txt,msg){
   $('linesEmpty').hidden=state.lines.length>0;
   renderSummary();
  }
- $('productTabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;state.tab=b.dataset.tab;state.type='all';const drinkware=['cups','bowls'].includes(state.tab),base=drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab);state.productKey=base[0]?.key||state.productKey;$('productSearch').value='';renderBuilder()});
- $('typeGrid').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;state.type=b.dataset.t;state.productKey=PRODUCT_ITEMS.find(p=>p.tab===state.tab&&(state.type==='all'||p.type===state.type))?.key||state.productKey;renderBuilder()});
+ $('productTabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;state.tab=b.dataset.tab;state.type='all';state.visibleProducts=12;const drinkware=['cups','bowls'].includes(state.tab),base=drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab);state.productKey=base[0]?.key||state.productKey;$('productSearch').value='';renderBuilder()});
+ $('typeGrid').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;state.type=b.dataset.t;state.visibleProducts=12;state.productKey=PRODUCT_ITEMS.find(p=>p.tab===state.tab&&(state.type==='all'||p.type===state.type))?.key||state.productKey;renderBuilder()});
  $('productGrid').addEventListener('click',e=>{const b=e.target.closest('[data-product]');if(!b)return;const p=PRODUCT_ITEM_BY_KEY.get(b.dataset.product);if(!p)return;state.productKey=p.key;state.tab=p.tab;state.type=['cups','bowls'].includes(p.tab)?p.type:'all';renderBuilder()});
- $('productSearch').addEventListener('input',renderProducts);
+ $('productSearch').addEventListener('input',()=>{state.visibleProducts=12;renderProducts()});
+ $('catalogMore').addEventListener('click',()=>{state.visibleProducts+=12;renderProducts()});
  $('qtyChips').addEventListener('click',e=>{const b=e.target.closest('[data-qty]');if(!b)return;state.qty=+b.dataset.qty;$('qtyCustom').value='';renderBuilder()});
  $('qtyCustom').addEventListener('input',e=>{const n=parseInt(e.target.value.replace(/\D/g,''),10);e.target.value=isNaN(n)?'':n;if(n)state.qty=n;
   document.querySelectorAll('#qtyChips .chip').forEach(c=>c.setAttribute('aria-pressed',!e.target.value&&+c.dataset.qty===state.qty));renderLines()});
