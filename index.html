@@ -326,7 +326,6 @@
 
 <div class="fab" id="fab">
   <a class="fab-b tt" id="fabTT" target="_blank" rel="noopener" aria-label="TikTok xưởng"><svg viewBox="0 0 24 24"><path d="M14 3v11.5a3.5 3.5 0 1 1-3-3.46V8.5a6.5 6.5 0 1 0 6 6.48V9.2c1.1.8 2.4 1.3 3.8 1.3V7.4A4.6 4.6 0 0 1 16.2 3H14z" fill="currentColor"/></svg></a>
-  <a class="fab-b ms" id="fabMS" target="_blank" rel="noopener" aria-label="Messenger xưởng"><svg viewBox="0 0 24 24"><path d="M12 2.5C6.5 2.5 2.5 6.4 2.5 11.3c0 2.7 1.3 5 3.3 6.6V21l3-1.7c1 .3 2.1.4 3.2.4 5.5 0 9.5-3.9 9.5-8.8S17.5 2.5 12 2.5z" fill="currentColor"/><path d="M6.5 13.8l3.6-3.9 2.2 2.1 3.9-2.1-3.6 3.9-2.2-2.1z" fill="#fff"/></svg></a>
   <a class="fab-b zl" href="https://zalo.me/0386135350" target="_blank" rel="noopener" aria-label="Zalo xưởng"><b>Zalo</b><span class="fab-tip">Trả lời trong 30 phút</span></a>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -559,16 +558,16 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-kind]');if
 const KET=[
  {r:'Đã có logo',t:'Gửi logo là in,<br>nhanh và gọn',img:'assets/ket-co-logo.jpg',alt:'Chủ quán tải logo lên máy tính, bên cạnh là ly giấy đã in logo',cta:'Đặt in nhanh',act:'data-kind="A"'},
  {r:'Chưa có logo',t:'Chuyên viên vẽ giúp,<br>đẹp và giá tốt',img:'assets/ket-ve-logo.jpg',alt:'Nhân viên xưởng vẽ logo linh vật ly nước trên bảng vẽ',cta:'Đặt in nhanh',act:'data-kind="B"'},
- {r:'Muốn tự làm',t:'Thư viện câu lệnh,<br>tự sáng tạo dễ dàng',img:'assets/ket-tu-lam.jpg',alt:'Chủ quán chọn mẫu logo do AI tạo trên điện thoại',cta:'Xem thư viện câu lệnh',act:'data-go="thu-vien-prompt"'},
+ {r:'Muốn tự làm',t:'Thư viện câu lệnh,<br>tự sáng tạo dễ dàng',img:'assets/ket-tu-lam.jpg',alt:'Chủ quán chọn mẫu logo do AI tạo trên điện thoại',cta:'Xem thư viện câu lệnh',act:'data-go="thu-vien-prompt"',soft:true},
  {r:'Còn phân vân',t:'Nhắn Zalo, nhân viên<br>tư vấn tận tình',img:'assets/ket-tu-van.jpg',alt:'Nhân viên xưởng nghe điện thoại tư vấn, tay cầm ly đã in',cta:'Nhắn Zalo cho xưởng',href:'https://zalo.me/0386135350'}];
 $('ketGrid').innerHTML=KET.map(k=>`<div class="card card--media ket-card"><div class="card-tx"><span class="card-eyebrow">${k.r}</span><b class="card-title">${k.t}</b></div>
  ${k.img?`<div class="media"><img src="${k.img}" alt="${esc(k.alt)}" loading="lazy"></div>`:`<div class="media slot">${slotIn('Ảnh: '+k.r)}</div>`}
- ${k.href?`<a class="btn btn-pri btn-block" href="${k.href}" target="_blank" rel="noopener">${k.cta}</a>`:`<button class="btn ${k.soft?'btn-text':'btn-pri'} btn-block" ${k.act}>${k.cta}</button>`}</div>`).join('');
+ ${k.href?`<a class="btn btn-sec btn-block" href="${k.href}" target="_blank" rel="noopener">${k.cta}</a>`:`<button class="btn ${k.soft?'btn-sec':'btn-pri'} btn-block" ${k.act}>${k.cta}</button>`}</div>`).join('');
 /* Mạng xã hội: điền link thật. Để trống thì mở trang tìm kiếm tên xưởng. */
 const SOCIAL={facebook:'https://www.facebook.com/magasincup',tiktok:'',messenger:'https://m.me/magasincup'};
 /* TikTok: chưa có kênh thì ẩn nút. Có kênh thì điền link vào SOCIAL.tiktok */
 if(SOCIAL.tiktok){$('gfTT').href=$('fabTT').href=SOCIAL.tiktok}else{$('gfTT').hidden=$('fabTT').hidden=true}
-$('gfMS').href=$('fabMS').href=SOCIAL.messenger||'https://m.me/magasincup';
+$('gfMS').href=SOCIAL.messenger||'https://m.me/magasincup';
 /* Khách đã in: điền ảnh thật (16:9) và câu nhận xét thật của khách, được khách đồng ý.
    {img:'link ảnh 16:9', shop:'Tên quán', place:'Phường, Cần Thơ', quote:'Câu khách nói'} */
 const CLIENTS=[];
@@ -578,11 +577,11 @@ const clientCard=c=>`<figure class="card card--media hof-card">
   <blockquote class="hof-quote${c.demo?' muted':''}">${esc(c.quote||'Chờ câu nhận xét thật của khách')}</blockquote>
   <figcaption class="hof-who"><span class="hof-av">${esc((c.shop||'Tên quán').trim().charAt(0).toUpperCase())}</span><span><b class="${c.demo?'muted':''}">${esc(c.shop||'Tên quán khách')}</b><span>${esc(c.place||'Cần Thơ')}</span></span></figcaption></figure>`;
 {const mock=(typeof MOCK_CLIENTS!=='undefined'?MOCK_CLIENTS:[]).map(c=>({...c,mock:1}));
- const list=CLIENTS.length?CLIENTS:mock.length?mock:Array.from({length:6},()=>({demo:1}));
- const one=list.map(clientCard).join('');
- $('clients').innerHTML=one+one.replace(/<figure /g,'<figure aria-hidden="true" ');
- $('clients').style.setProperty('--n',list.length);}
-loadImgs($('clients'));
+ const list=CLIENTS.length?CLIENTS:mock;
+ $('s-show').hidden=!list.length;
+ if(list.length){const one=list.map(clientCard).join('');
+  $('clients').innerHTML=one+one.replace(/<figure /g,'<figure aria-hidden="true" ');
+  $('clients').style.setProperty('--n',list.length);loadImgs($('clients'))}}
 
 loadImgs();
 
@@ -658,6 +657,10 @@ async function copyText(txt,msg){
   $('linesEmpty').hidden=state.lines.length>0;
   renderSummary();
  }
+ const addBar=document.querySelector('.add-to-order');
+ if('IntersectionObserver' in window){
+  new IntersectionObserver(([entry])=>addBar.classList.toggle('is-visible',entry.isIntersecting),{threshold:0,rootMargin:'-72px 0px -72px'}).observe($('productGrid'));
+ }else addBar.classList.add('is-visible');
  $('productTabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;state.tab=b.dataset.tab;state.type='all';state.visibleProducts=12;const drinkware=['cups','bowls'].includes(state.tab),base=drinkware?PRODUCT_ITEMS.filter(p=>p.tab===state.tab):ACCESSORY_ITEMS.filter(p=>p.tab===state.tab);state.productKey=base[0]?.key||state.productKey;$('productSearch').value='';renderBuilder()});
  $('typeGrid').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;state.type=b.dataset.t;state.visibleProducts=12;state.productKey=PRODUCT_ITEMS.find(p=>p.tab===state.tab&&(state.type==='all'||p.type===state.type))?.key||state.productKey;renderBuilder()});
  $('productGrid').addEventListener('click',e=>{const b=e.target.closest('[data-product]');if(!b)return;const p=PRODUCT_ITEM_BY_KEY.get(b.dataset.product);if(!p)return;state.productKey=p.key;state.tab=p.tab;state.type=['cups','bowls'].includes(p.tab)?p.type:'all';renderBuilder()});
