@@ -44,11 +44,27 @@
     <button class="brand" data-go="trang-chu" aria-label="Magasin Cup, về trang chủ">
       <svg class="wm" aria-hidden="true"><use href="#i-magasin"/></svg>
     </button>
+    <nav class="main-nav" aria-label="Điều hướng chính">
+      <button class="nav-link" data-go="trang-chu" data-nav="trang-chu">Trang chủ</button>
+      <button class="nav-link" data-go="dat-hang" data-nav="dat-hang">Sản phẩm</button>
+      <button class="nav-link" data-scroll="s-pl">Quy trình</button>
+      <button class="nav-link" data-go="thu-vien-prompt" data-nav="thu-vien-prompt">Tạo logo AI</button>
+      <button class="nav-link" data-scroll="s-qa">Hỏi đáp</button>
+    </nav>
     <div class="top-r">
-      <button class="top-link" data-go="thu-vien-prompt" data-nav="thu-vien-prompt"><span class="top-link-full">Tạo logo AI</span><span class="top-link-short">Logo AI</span></button>
-      <button class="btn btn-light" data-go="dat-hang">Đặt in nhanh</button>
+      <button class="btn btn-light header-cta" data-go="dat-hang"><span class="cta-full">Đặt in nhanh</span><span class="cta-short">Đặt in</span></button>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Mở menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Điều hướng trên điện thoại" hidden>
+    <button class="mobile-nav-link" data-go="trang-chu" data-nav="trang-chu">Trang chủ</button>
+    <button class="mobile-nav-link" data-go="dat-hang" data-nav="dat-hang">Sản phẩm &amp; đặt in</button>
+    <button class="mobile-nav-link" data-scroll="s-pl">Quy trình đặt in</button>
+    <button class="mobile-nav-link" data-go="thu-vien-prompt" data-nav="thu-vien-prompt">Tạo logo với AI</button>
+    <button class="mobile-nav-link" data-scroll="s-qa">Hỏi đáp</button>
+  </nav>
 </header>
 
 <!-- ============ TRANG CHỦ ============ -->
@@ -592,16 +608,27 @@ function show(v){
  if(v==='da-gui'&&!lastOrder) v='dat-hang';
  VIEWS.forEach(x=>$('v-'+x).hidden=x!==v);
  document.querySelectorAll('[data-nav]').forEach(x=>x.toggleAttribute('aria-current',x.dataset.nav===v));
+ closeMenu();
  if(v==='trang-chu')$('footSlot').appendChild($('gfoot'));else document.body.insertBefore($('gfoot'),$('toast'));
  window.scrollTo(0,0);
 }
 function go(v){if(location.hash==='#'+v)show(v);else location.hash=v}
 window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+const menuToggle=$('menuToggle'),mobileNav=$('mobileNav');
+function closeMenu(){
+ if(!menuToggle||!mobileNav)return;
+ menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Mở menu');mobileNav.hidden=true;
+}
+menuToggle?.addEventListener('click',()=>{
+ const open=menuToggle.getAttribute('aria-expanded')!=='true';
+ menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Đóng menu':'Mở menu');mobileNav.hidden=!open;
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
 document.addEventListener('click',e=>{
  const g=e.target.closest('[data-go]');if(g){e.preventDefault();go(g.dataset.go);return}
  const s=e.target.closest('[data-scroll]');if(s){e.preventDefault();
   const run=()=>document.getElementById(s.dataset.scroll)?.scrollIntoView({behavior:'smooth'});
-  if($('v-trang-chu').hidden){go('trang-chu');setTimeout(run,60)}else run();return}
+  closeMenu();if($('v-trang-chu').hidden){go('trang-chu');setTimeout(run,60)}else run();return}
  const c=e.target.closest('[data-copy]');if(c)copyText(c.dataset.copy,'Đã chép '+c.dataset.copy);
 });
 function toast(m){const t=$('toast');t.innerHTML=icon('check')+esc(m);t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200)}
